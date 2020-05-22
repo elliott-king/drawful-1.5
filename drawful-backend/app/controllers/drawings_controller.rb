@@ -18,8 +18,14 @@ class DrawingsController < ApplicationController
     # TODO: maybe check that the file write succeeded?
     d = Drawing.new
     d.user = User.first # TODO: attach to params[:user], when implemented
+    d.prompt_id = params[:prompt]
     # TODO: d.prompt should be assigned
     d.file = "#{id}.png"
     d.save!
   end
+
+  # private
+  #   def drawing_params
+  #     params.require(:drawing).permit(:file, :user, :prompt)
+  #   end
 end

@@ -20,3 +20,5 @@ u = User.create(username: "Luis")
   Prompt.create(title: "#{Faker::Creature::Animal.name} #{Faker::Creature::Animal.name} ")
 end
 
+Drawing.create(file: "IMG_8201.JPG", user_id: u.id, prompt_id: Prompt.all.sample.id)
+Drawing.create(file: "IMG_8203.JPG", user_id: u.id, prompt_id: Prompt.all.sample.id)
