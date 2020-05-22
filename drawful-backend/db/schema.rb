@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_22_161618) do
+ActiveRecord::Schema.define(version: 2020_05_22_170458) do
 
   create_table "drawings", force: :cascade do |t|
     t.string "file"
@@ -22,10 +22,8 @@ ActiveRecord::Schema.define(version: 2020_05_22_161618) do
 
   create_table "prompts", force: :cascade do |t|
     t.string "title"
-    t.integer "drawing_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["drawing_id"], name: "index_prompts_on_drawing_id"
   end
 
   create_table "users", force: :cascade do |t|
