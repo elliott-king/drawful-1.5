@@ -10,8 +10,8 @@ Drawing.destroy_all
 User.destroy_all
 
 u = User.create(username: "Luis")
-Drawing.create(file: "assets/IMG_8201.JPG", user_id: u.id)
-Drawing.create(file: "assets/IMG_8203.JPG", user_id: u.id)
+Drawing.create(file: "IMG_8201.JPG", user_id: u.id)
+Drawing.create(file: "IMG_8203.JPG", user_id: u.id)
 
 
 5.times do 

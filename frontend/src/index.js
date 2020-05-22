@@ -13,7 +13,7 @@ function displayImage() {
 
     const imageElement = document.createElement("img")
     const randomFile = image[Math.floor(Math.random() * image.length)].file
-    imageElement.src = randomFile
+    imageElement.src = "assets/" + randomFile
 
     imageDiv.appendChild(imageElement)
   }
