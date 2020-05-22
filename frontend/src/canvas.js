@@ -1,5 +1,3 @@
-console.log('hello world')
-
 document.addEventListener('DOMContentLoaded', (event) => {
   const canvasDiv = document.querySelector('#user-image-create')
   createCanvas(canvasDiv)
@@ -79,7 +77,6 @@ function createCanvas(div) {
 
   // create canvas element and append it to document body
   const canvas = document.createElement('canvas');
-  console.log(canvas.toDataURL('image/png'))
 
   canvas.setAttribute('id', 'user-image-canvas')
   div.appendChild(canvas);
@@ -90,7 +87,7 @@ function createCanvas(div) {
 
   // get canvas 2D context and set him correct size
   const ctx = canvas.getContext('2d');
-  // resize();
+  resize();
 
   // last known position
   const pos = { x: 0, y: 0 };
@@ -102,15 +99,22 @@ function createCanvas(div) {
 
   // new position from mouse event
   function setPosition(e) {
-    pos.x = e.clientX;
-    pos.y = e.clientY;
+    var X,Y;
+    X = e.pageX || e.clientX || e.offsetX;
+    Y = e.pageY || e.clientY || e.offsetY;
+    X = X - canvas.offsetLeft;
+    Y = Y - canvas.offsetTop;
+    pos.x = X 
+    pos.y = Y
   }
 
   // resize canvas
-  // function resize() {
-  //   ctx.canvas.width = window.innerWidth;
-  //   ctx.canvas.height = window.innerHeight;
-  // }
+  function resize() {
+    ctx.canvas.width = 300;
+    ctx.canvas.height = 300;
+    // ctx.canvas.width = window.innerWidth;
+    // ctx.canvas.height = window.innerHeight;
+  }
 
   function draw(e) {
     // mouse left button must be pressed

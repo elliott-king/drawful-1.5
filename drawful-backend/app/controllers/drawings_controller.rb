@@ -7,10 +7,10 @@ class DrawingsController < ApplicationController
   end
 
   def create
-    puts params[:image]
+    id = SecureRandom.uuid
     puts params[:user]
     puts params[:prompt]
-    id = SecureRandom.uuid
+    puts id
     # https://stackoverflow.com/questions/21707595
     File.open("#{Rails.root}/../frontend/assets/#{id}.png", 'wb') do |file|
       file.write(params[:image].read)
