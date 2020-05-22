@@ -6,13 +6,11 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Prompt.destroy_all
 Drawing.destroy_all
 User.destroy_all
 
 u = User.create(username: "Luis")
-Drawing.create(file: "IMG_8201.JPG", user_id: u.id)
-Drawing.create(file: "IMG_8203.JPG", user_id: u.id)
-
 
 5.times do 
   Prompt.create(title: "#{Faker::DcComics.hero} #{Faker::Verb.ing_form} #{Faker::Space.planet}")
@@ -21,3 +19,4 @@ Drawing.create(file: "IMG_8203.JPG", user_id: u.id)
 
   Prompt.create(title: "#{Faker::Creature::Animal.name} #{Faker::Creature::Animal.name} ")
 end
+
