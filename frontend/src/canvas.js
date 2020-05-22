@@ -13,14 +13,16 @@ function addUploadButton(div) {
   btn.textContent = "Upload"
   btn.addEventListener('click', (event) => {
     const canvas = document.getElementById('user-image-canvas')
+    const prompt = document.getElementById("prompt")
     const dataUrl = canvas.toDataURL("image/png;base64;")
 
     // https://stackoverflow.com/questions/21707595
     const file = dataURLtoBlob(dataUrl)
     let fd = new FormData()
     fd.append("image", file);
-    fd.append("prompt", "TODO: insert prompt here")
+    fd.append("prompt", prompt.dataset.id)
     fd.append("user", "TODO: insert username here")
+    // console.dir(`fd form promp id = ${prompt.dataset.id}`)
 
     // And send it
     const url = "http://localhost:3000/drawings"
@@ -54,8 +56,27 @@ function addUploadButton(div) {
   div.appendChild(btn)
 }
 
+function displayPrompt(div) {
+  const prompsUrl = "http://localhost:3000/prompts"
+  fetch(prompsUrl)
+    .then(res => res.json())
+    .then(renderPrompt)
+
+  function renderPrompt(prompts) {
+    const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)]
+    const promptElement = document.createElement("p")
+    promptElement.dataset.id = randomPrompt.id
+    // console.log(promptElement.dataset.id)
+    promptElement.id = "prompt"
+    promptElement.textContent = randomPrompt.title
+
+    div.prepend(promptElement)
+  }
+}
+
 // Taken from https://stackoverflow.com/questions/2368784/
 function createCanvas(div) {
+
   // create canvas element and append it to document body
   const canvas = document.createElement('canvas');
   console.log(canvas.toDataURL('image/png'))
@@ -107,4 +128,7 @@ function createCanvas(div) {
 
     ctx.stroke(); // draw it!
   }
+
+  // pull random prompt and create/display element
+  displayPrompt(div)
 }
