@@ -3,7 +3,7 @@ require 'securerandom'
 class DrawingsController < ApplicationController
   def index
     drawings = Drawing.all
-    render json: drawings, only: [:file]
+    render json: drawings, include: [:prompt]
   end
 
   def create
