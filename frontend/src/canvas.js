@@ -1,9 +1,3 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-  const canvasDiv = document.querySelector('#user-image-create')
-  createCanvas(canvasDiv)
-  addUploadButton(canvasDiv)
-})
-
 function addUploadButton(div) {
 
   const btn = document.createElement('button')
@@ -30,9 +24,12 @@ function addUploadButton(div) {
       // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
       body: fd
     }).then(res => {
-      console.log('image upload response', res)
+      // console.log('image upload response', res)
       // return res.json()
+      // remove canvas elements and render image
+      displayImage()
     })
+
   })
 
   // Convert dataURL to Blob object
