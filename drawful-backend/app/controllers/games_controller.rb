@@ -11,7 +11,7 @@ class GamesController < ApplicationController
     user.save 
 
     # byebug
-    render json: game
+    render json: game, include: [:users]
   end
 
   def add_user
