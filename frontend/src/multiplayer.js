@@ -62,23 +62,24 @@ function newMultiplayerGame(e) {
 }
 
 function joinGame(gameCode) {
-  // fetch(joinGameUrl, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     game: {
-  //       code: gameCode,
-  //       user_id: getUserId(),
-  //     },
-  //   }),
-  // })
-  //   .then((res) => res.json())
-  //   .then(console.dir);
-
-  fetch(userCountUrl + getUserId())
+  fetch(joinGameUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      game: {
+        code: gameCode,
+        user_id: getUserId(),
+      },
+    }),
+  })
     .then((res) => res.json())
     .then(console.dir);
 }
 
+function check_users() {
+  fetch(userCountUrl + getUserId())
+    .then((res) => res.json())
+    .then(console.dir);
+}
