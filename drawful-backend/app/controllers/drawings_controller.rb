@@ -6,6 +6,7 @@ class DrawingsController < ApplicationController
     render json: drawings 
   end
 
+  # expects json format {user: user_id, prompt: prompt_id}
   def create
     id = SecureRandom.uuid
     puts params[:user]
@@ -17,15 +18,23 @@ class DrawingsController < ApplicationController
     end
     # TODO: maybe check that the file write succeeded?
     d = Drawing.new
-    d.user = User.first # TODO: attach to params[:user], when implemented
-    d.prompt_id = params[:prompt]
-    # TODO: d.prompt should be assigned
+    d.user_id = params[:user]
+    dp = DrawingPrompt.create!(prompt_id: params[:prompt], drawing: d)
     d.file = "#{id}.png"
     d.save!
   end
 
-  # private
-  #   def drawing_params
-  #     params.require(:drawing).permit(:file, :user, :prompt)
-  #   end
+  def prompts
+    drawing = Drawing.find(params[:id])
+    render json: {prompts: drawing.prompts}
+  end
+
+  def correct_prompt
+    render json: { correct: Drawing.find(params[:id]).correct_prompt.id }
+  end
+
+  def prompt_count
+    drawing = Drawing.find(params[:id])
+    render json: {count: drawing.prompts.count}
+  end
 end
