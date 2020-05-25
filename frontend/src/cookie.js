@@ -1,29 +1,31 @@
 async function findOrCreateCookie() {
-  const usersUrl = "http://localhost:3000/users"
+  const usersUrl = "http://localhost:3000/users";
 
   if (!document.cookie) {
-    const user = await postUser()
-    console.dir(user)
+    const user = await postUser();
+    console.dir(user);
 
-    document.cookie = `user_id=${user.id}`
-    console.dir(document.cookie)
+    document.cookie = `user_id=${user.id}`;
+    console.dir(document.cookie);
   }
 
   async function postUser() {
     const res = await fetch(usersUrl, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
-      }
-    })
+        "Content-Type": "application/json",
+      },
+    });
 
-    return res.json()
+    return res.json();
   }
 }
 
 function getUserId() {
-  const userId = document.cookie.replace(/(?:(?:^|.*;\s*)user_id\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-  
-  return userId
-}
+  const userId = document.cookie.replace(
+    /(?:(?:^|.*;\s*)user_id\s*\=\s*([^;]*).*$)|^.*$/,
+    "$1"
+  );
 
+  return userId;
+}

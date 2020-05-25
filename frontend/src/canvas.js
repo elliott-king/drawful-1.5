@@ -12,7 +12,7 @@ function addUploadButton(div) {
     let fd = new FormData();
     fd.append("image", file);
     fd.append("prompt", prompt.dataset.id);
-    fd.append("user", "TODO: insert username here");
+    fd.append("user", getUserId());
     // console.dir(`fd form promp id = ${prompt.dataset.id}`)
 
     // And send it
