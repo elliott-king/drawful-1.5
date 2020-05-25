@@ -1,9 +1,8 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-  const canvasDiv = document.querySelector('#game-content')
+document.addEventListener("DOMContentLoaded", (event) => {
+  const canvasDiv = document.querySelector("#game-content");
 
-  createCanvas(canvasDiv)
-  addUploadButton(canvasDiv)
-  findOrCreateCookie()
-  addMultiplayerButtons()
-})
-
+  createCanvas(canvasDiv);
+  addUploadButton(canvasDiv);
+  findOrCreateCookie();
+  // addMultiplayerButtons()
+});
