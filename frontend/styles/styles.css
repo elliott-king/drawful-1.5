@@ -13,11 +13,61 @@ canvas {
   height: 300px;
 }
 
-#game-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 100vh;
+.sp-draw {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  display: grid;
+  grid-template-columns: 30% auto 30%;
+  grid-template-rows: auto;
+  grid-template-areas: 
+   "logo logo logo" 
+   ". content ."
+   ". . . "
 }
+
+.sp-guess {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  display: grid;
+  grid-template-columns: 20% auto auto 20%;
+  grid-template-rows: auto;
+  grid-template-areas: 
+   "logo logo logo logo" 
+   ". content prompts ."
+   ". . . ."
+}
+
+#logo {
+  grid-area: logo;
+  place-self: center;
+}
+
+#game-content {
+  grid-area: content;
+  place-self: center;
+  text-align: center;
+}
+
+
+#prompts {
+  grid-area: prompts;
+  place-self: center;
+  text-align: center;
+}
+
+/* #game-content { */
+/*   display: flex; */
+/*   flex-direction: column; */
+/*   justify-content: center; */
+/*   align-items: center; */
+/*   text-align: center; */
+/*   min-height: 100vh; */
+/* } */
