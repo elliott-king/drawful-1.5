@@ -1,4 +1,4 @@
 class User < ApplicationRecord
   # make sure game is removed after finished
-  belongs_to :game
+  belongs_to :game, optional: true
 end
