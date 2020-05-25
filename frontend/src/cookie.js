@@ -1,7 +1,7 @@
 async function findOrCreateCookie() {
   const usersUrl = "http://localhost:3000/users";
 
-  if (!document.cookie) {
+  if (!document.cookie || getUserId() == "null") {
     const user = await postUser();
     console.dir(user);
 
