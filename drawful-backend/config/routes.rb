@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :users
   
   get '/games/get_users/:user_id', to: 'games#get_users'
+  get '/games/user_count/:id', to: 'games#user_count'
   post '/games/add_user', to: 'games#add_user', as: 'join_game'
   resources :drawings do
     member do

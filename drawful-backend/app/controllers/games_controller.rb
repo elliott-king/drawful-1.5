@@ -18,7 +18,7 @@ class GamesController < ApplicationController
     user = User.find_by(id: add_user_params[:user_id])
     game = Game.find_by(code: add_user_params[:code])
 
-    if user_count(game) < 4
+    if game.user_count < 4
       user.game = game
       user.save
       byebug
@@ -29,8 +29,8 @@ class GamesController < ApplicationController
     end
   end
 
-  def user_count(game)
-    game.users.count
+  def user_count
+    render json: {count: Game.find(params[:id]).user_count}
   end
 
   def get_users
