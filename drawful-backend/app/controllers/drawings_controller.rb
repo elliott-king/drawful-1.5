@@ -37,4 +37,16 @@ class DrawingsController < ApplicationController
     drawing = Drawing.find(params[:id])
     render json: {count: drawing.prompts.count}
   end
+
+  # TODO: maybe consider making a Guesses controller
+  def add_guess
+    drawing = Drawing.find(params[:id])
+    Guess.create(drawing: drawing)
+    render json: drawing
+  end
+
+  def guess_count
+    drawing = Drawing.find(params[:id])
+    render json: {count: drawing.guesses.count}
+  end
 end
