@@ -18,28 +18,39 @@ function displayImage() {
   }
 
   function renderImage(image) {
-    contentDiv.innerHTML = "";
-    promptDiv.innerHTML = "";
+    if (imagesShown < 5) {
+      // clear content in relevant divs
+      contentDiv.innerHTML = "";
+      promptDiv.innerHTML = "";
 
-    const imageElement = document.createElement("img");
-    const randomImg = image[Math.floor(Math.random() * image.length)];
+      // create image element and append that element
+      const imageElement = document.createElement("img");
+      const randomImg = image[Math.floor(Math.random() * image.length)];
 
-    imageElement.src = "assets/" + randomImg.file;
+      imageElement.src = "assets/" + randomImg.file;
 
-    displayScore();
-    contentDiv.appendChild(imageElement);
+      contentDiv.appendChild(imageElement);
+      // passing in the displayed image
+      renderPrompts(randomImg);
+    } else {
+      promptDiv.innerHTML = "";
 
-    // passing in the displayed image
-    renderPrompts(randomImg);
+      displayScore();
+    }
   }
 
   function displayScore() {
     const scoreElement = document.createElement("h1");
+    const startOverBtn = document.createElement("button");
+    startOverBtn.value = "start over";
+    startOverBtn.innerHTML = "Start Over";
+
     scoreElement.innerHTML = `
-      <h1>score: <span id="score">${score}</span></h1>
+      <h1>final score: <span id="score">${score}</span></h1>
     `;
 
     promptDiv.prepend(scoreElement);
+    promptDiv.appendChild(startOverBtn);
   }
 
   async function fetchPrompts() {
@@ -82,15 +93,27 @@ function displayImage() {
   }
 
   promptDiv.addEventListener("click", (e) => {
+    console.dir(e.target.value);
     if (e.target.dataset.action === "guess") {
       const scoreElement = document.getElementById("score");
       imagesShown++;
+
       if (e.target.dataset.correct === "true") {
-        scoreElement.innerHTML++;
-        score = scoreElement.innerHTML;
+        score++;
+        e.target.style.color = "green";
+      } else {
+        const correctAns = promptDiv.querySelector(`[data-correct="true"]`);
+        correctAns.style.color = "green";
+        e.target.style.color = "red";
       }
 
       fetchImage();
+    } else if (e.target.value === "start over") {
+      contentDiv.innerHTML = "";
+      promptDiv.remove();
+
+      createCanvas(contentDiv);
+      addUploadButton(contentDiv);
     }
   });
 
