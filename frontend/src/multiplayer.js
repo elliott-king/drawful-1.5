@@ -1,5 +1,6 @@
 gameUrl = "http://localhost:3000/games";
-const joingameUrl = "http://localhost:3000/games/add_user/";
+const joinGameUrl = "http://localhost:3000/games/add_user/";
+const userCountUrl = "http://localhost:3000/games/get_users/";
 
 function addMultiplayerButtons() {
   // Add one multiplayer button ->
@@ -61,18 +62,22 @@ function newMultiplayerGame(e) {
 }
 
 function joinGame(gameCode) {
-  fetch(joingameUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      game: {
-        code: gameCode,
-        user_id: getUserId(),
-      },
-    }),
-  })
+  // fetch(joinGameUrl, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     game: {
+  //       code: gameCode,
+  //       user_id: getUserId(),
+  //     },
+  //   }),
+  // })
+  //   .then((res) => res.json())
+  //   .then(console.dir);
+
+  fetch(userCountUrl + getUserId())
     .then((res) => res.json())
     .then(console.dir);
 }

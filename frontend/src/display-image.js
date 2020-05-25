@@ -142,7 +142,7 @@ function appendPromptSet(correctPrompt, allPrompts, parent) {
     }
   }
 
-  promptElementsSet.forEach((element) => promptDiv.appendChild(element));
+  promptElementsSet.forEach((element) => parent.appendChild(element));
 }
 
 function changeElementColor(element, color) {
