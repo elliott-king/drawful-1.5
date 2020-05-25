@@ -1,4 +1,5 @@
 class GamesController < ApplicationController
+  before_action: :find_game, only: [:add_user, :show]
   def create
     game = Game.create
     game.code = (0...4).map { (65 + rand(26)).chr }.join
@@ -7,12 +8,17 @@ class GamesController < ApplicationController
     user.game = game 
     user.save 
 
-    byebug
+    # byebug
     render json: game
   end
 
+  def add_user
+    user = User.find(params[:user_id])
+    user.game = game
+  end
+
   def show
-    game = Game.find(params[:game_id])
+    # game = Game.find(params[:game_id])
     # include users, drawings
     # IF not_started: return game & users
     if !game.is_started
@@ -49,4 +55,9 @@ class GamesController < ApplicationController
     # link to main page?
   end
   
+  private 
+  
+  def find_game 
+    game = Game.find(params[:game_id])
+  end
 end
