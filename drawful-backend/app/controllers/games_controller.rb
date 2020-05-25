@@ -1,4 +1,6 @@
 class GamesController < ApplicationController
+  before_action :find_game, only: [:show]
+
   def create
     game = Game.create
     game.code = (0...4).map { (65 + rand(26)).chr }.join
@@ -7,12 +9,26 @@ class GamesController < ApplicationController
     user.game = game 
     user.save 
 
-    byebug
+    # byebug
     render json: game
   end
 
+  def add_user
+    game = Game.find_by(code: add_user_params[:code])
+
+    if game.users.count < 4
+      user = User.find_by(id: add_user_params[:user_id])
+      user.game = game
+      user.save
+
+      render json: game, include: [:users]
+    else 
+      render json: { error: "This lobby is full" }
+    end
+  end
+
   def show
-    game = Game.find(params[:game_id])
+    # game = Game.find(params[:game_id])
     # include users, drawings
     # IF not_started: return game & users
     if !game.is_started
@@ -49,4 +65,13 @@ class GamesController < ApplicationController
     # link to main page?
   end
   
+  private 
+  
+  def find_game 
+    game = Game.find(params[:game_id])
+  end
+
+  def add_user_params
+    params.require(:game).permit(:code, :user_id)
+  end
 end

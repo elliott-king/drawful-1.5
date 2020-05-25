@@ -14,43 +14,31 @@ function displayImage() {
   function fetchImage() {
     fetch(drawingsUrl)
       .then((res) => res.json())
-      .then(renderImage);
+      .then(gameLoop);
   }
 
-  function renderImage(image) {
+  function gameLoop(image) {
     if (imagesShown < 5) {
       // clear content in relevant divs
-      contentDiv.innerHTML = "";
-      promptDiv.innerHTML = "";
+      clearDiv(contentDiv);
+      clearDiv(promptDiv);
 
       // create image element and append that element
-      const imageElement = document.createElement("img");
-      const randomImg = image[Math.floor(Math.random() * image.length)];
+      const randomImg = selectRandom(image);
+      renderImage(randomImg, contentDiv);
 
-      imageElement.src = "assets/" + randomImg.file;
-
-      contentDiv.appendChild(imageElement);
       // passing in the displayed image
       renderPrompts(randomImg);
     } else {
-      promptDiv.innerHTML = "";
+      clearDiv(promptDiv);
 
       displayScore();
     }
   }
 
   function displayScore() {
-    const scoreElement = document.createElement("h1");
-    const startOverBtn = document.createElement("button");
-    startOverBtn.value = "start over";
-    startOverBtn.innerHTML = "Start Over";
-
-    scoreElement.innerHTML = `
-      <h1>final score: <span id="score">${score}</span></h1>
-    `;
-
-    promptDiv.prepend(scoreElement);
-    promptDiv.appendChild(startOverBtn);
+    promptDiv.prepend(createScoreElem(score));
+    promptDiv.appendChild(createStartOverBtn);
   }
 
   async function fetchPrompts() {
@@ -65,51 +53,29 @@ function displayImage() {
     // fetchPrompts returns a promise. the await keyword forces allPrompts to wait until the promise is resolved
     let allPrompts = await fetchPrompts();
     const correctPrompt = createPromptElement(image, image.prompt);
-    // needs to be a set to prevent duplicate elements
-    const promptElementsSet = new Set();
-    promptElementsSet.add(correctPrompt);
 
-    // selects 3 random prompts, creates an element, and adds it to the array alongside the correct prompt
-    while (promptElementsSet.size < 4) {
-      let randomPrompt =
-        allPrompts[Math.floor(Math.random() * allPrompts.length)];
-      if (randomPrompt !== correctPrompt) {
-        promptElementsSet.add(createPromptElement(image, randomPrompt));
-      }
-    }
+    appendPromptSet(correctPrompt, allPrompts, promptDiv);
 
-    promptElementsSet.forEach((element) => promptDiv.appendChild(element));
     container.appendChild(promptDiv);
   }
 
-  function createPromptElement(image, prompt) {
-    const promptElement = document.createElement("h2");
-    promptElement.dataset.correct =
-      image.prompt_id === prompt.id ? "true" : "false";
-    promptElement.dataset.action = "guess";
-    promptElement.innerHTML = prompt.title;
-
-    return promptElement;
-  }
-
   promptDiv.addEventListener("click", (e) => {
-    console.dir(e.target.value);
     if (e.target.dataset.action === "guess") {
       const scoreElement = document.getElementById("score");
       imagesShown++;
 
       if (e.target.dataset.correct === "true") {
         score++;
-        e.target.style.color = "green";
+        changeElementColor(e.target, "green");
       } else {
         const correctAns = promptDiv.querySelector(`[data-correct="true"]`);
-        correctAns.style.color = "green";
-        e.target.style.color = "red";
+        changeElementColor(correctAns, "green");
+        changeElementColor(e.target, "red");
       }
 
       fetchImage();
     } else if (e.target.value === "start over") {
-      contentDiv.innerHTML = "";
+      clearDiv(contentDiv);
       promptDiv.remove();
 
       createCanvas(contentDiv);
@@ -118,4 +84,67 @@ function displayImage() {
   });
 
   fetchImage();
+}
+
+function clearDiv(div) {
+  div.innerHTML = "";
+}
+
+function selectRandom(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+function renderImage(image, parent) {
+  const imageElement = document.createElement("img");
+  imageElement.src = "assets/" + image.file;
+
+  parent.appendChild(imageElement);
+}
+
+function createScoreElem(score) {
+  const scoreElement = document.createElement("h1");
+  scoreElement.innerHTML = `
+    <h1>final score: <span id="score">${score}</span></h1>
+  `;
+
+  return scoreElement;
+}
+
+function createStartOverBtn() {
+  const startOverBtn = document.createElement("button");
+  startOverBtn.value = "start over";
+  startOverBtn.innerHTML = "Start Over";
+
+  return startOverBtn;
+}
+
+function createPromptElement(image, prompt) {
+  const promptElement = document.createElement("h2");
+  promptElement.dataset.correct =
+    image.prompt_id === prompt.id ? "true" : "false";
+  promptElement.dataset.action = "guess";
+  promptElement.innerHTML = prompt.title;
+
+  return promptElement;
+}
+
+function appendPromptSet(correctPrompt, allPrompts, parent) {
+  // needs to be a set to prevent duplicate elements
+  const promptElementsSet = new Set();
+  promptElementsSet.add(correctPrompt);
+
+  // selects 3 random prompts, creates an element, and adds it to the array alongside the correct prompt
+  while (promptElementsSet.size < 4) {
+    let randomPrompt =
+      allPrompts[Math.floor(Math.random() * allPrompts.length)];
+    if (randomPrompt !== correctPrompt) {
+      promptElementsSet.add(createPromptElement(image, randomPrompt));
+    }
+  }
+
+  promptElementsSet.forEach((element) => promptDiv.appendChild(element));
+}
+
+function changeElementColor(element, color) {
+  element.style.color = color;
 }
