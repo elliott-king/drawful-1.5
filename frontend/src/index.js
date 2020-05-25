@@ -4,5 +4,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
   createCanvas(canvasDiv)
   addUploadButton(canvasDiv)
   findOrCreateCookie()
+  addMultiplayerButtons()
 })
 

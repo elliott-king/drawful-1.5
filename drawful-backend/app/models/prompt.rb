@@ -1,3 +1,4 @@
 class Prompt < ApplicationRecord
-  has_many :drawings
+  has_many :drawingprompts
+  has_many :drawings, through: :drawingprompts
 end
