@@ -128,7 +128,7 @@ function createPromptElement(image, prompt) {
   return promptElement;
 }
 
-function appendPromptSet(correctPrompt, allPrompts, parent) {
+function appendPromptSet(correctPrompt, allPrompts, promptDiv) {
   // needs to be a set to prevent duplicate elements
   const promptElementsSet = new Set();
   promptElementsSet.add(correctPrompt);
@@ -138,11 +138,26 @@ function appendPromptSet(correctPrompt, allPrompts, parent) {
     let randomPrompt =
       allPrompts[Math.floor(Math.random() * allPrompts.length)];
     if (randomPrompt !== correctPrompt) {
-      promptElementsSet.add(createPromptElement(image, randomPrompt));
+      // TODO: I changed this, it was previously throwing a ReferenceError
+      promptElementsSet.add(createPromptElement({prompt_id: -1}, randomPrompt));
     }
   }
 
-  promptElementsSet.forEach((element) => parent.appendChild(element));
+  // The randomization was not working, the correct element was always first
+  const promptElementArray = Array.from(promptElementsSet)
+  /* Randomize array in-place using Durstenfeld shuffle algorithm */
+  // https://stackoverflow.com/questions/2450954
+  function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+  }
+  shuffleArray(promptElementArray)
+
+  promptElementArray.forEach((element) => promptDiv.appendChild(element));
 }
 
 function changeElementColor(element, color) {
