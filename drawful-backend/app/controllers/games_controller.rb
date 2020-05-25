@@ -1,5 +1,6 @@
 class GamesController < ApplicationController
-  before_action :find_game, only: [:show]
+  # before_action :find_game, only: [:show]
+  # before_action :find_user, only: [:add_user, :user_count]
 
   def create
     game = Game.create
@@ -14,17 +15,22 @@ class GamesController < ApplicationController
   end
 
   def add_user
+    user = User.find_by(id: add_user_params[:user_id])
     game = Game.find_by(code: add_user_params[:code])
 
-    if game.users.count < 4
-      user = User.find_by(id: add_user_params[:user_id])
+    if user_count(game) < 4
       user.game = game
       user.save
+      byebug
 
       render json: game, include: [:users]
     else 
       render json: { error: "This lobby is full" }
     end
+  end
+
+  def user_count(game)
+    game.users.count
   end
 
   def show
@@ -69,6 +75,10 @@ class GamesController < ApplicationController
   
   def find_game 
     game = Game.find(params[:game_id])
+  end
+
+  def find_user
+    user = User.find_by(id: add_user_params[:user_id])
   end
 
   def add_user_params
