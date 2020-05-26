@@ -17,12 +17,22 @@ class DrawingsController < ApplicationController
       file.write(params[:image].read)
     end
     # TODO: maybe check that the file write succeeded?
+    u = User.find(params[:user])
     d = Drawing.new
     d.user_id = params[:user]
+    d.game = u.game
     dp = DrawingPrompt.create!(prompt_id: params[:prompt], drawing: d)
     d.file = "#{id}.png"
     d.save!
   end
+
+  def game_drawings
+    user = User.find(params[:user_id])
+    drawings = user.game.drawings
+
+    render json: :drawings
+  end  
+  
 
   def prompts
     drawing = Drawing.find(params[:id])

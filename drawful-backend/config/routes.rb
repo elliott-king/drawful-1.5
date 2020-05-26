@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   get '/users/users_in_game/:user_id', to: 'users#users_in_game'
 
+  get '/drawings/game_drawings/:user_id', to: 'drawings#game_drawings'
+
   resources :drawings do
     member do
       get 'prompt_count'
