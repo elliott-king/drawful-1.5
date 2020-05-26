@@ -2,6 +2,7 @@ const mainContainer = document.getElementById("container");
 const container = document.getElementById("game-content");
 
 const gameUrl = "http://localhost:3000/games";
+const usersUrl = "http://localhost:3000/users/";
 const joinGameUrl = "http://localhost:3000/games/add_user/";
 const getUsersUrl = "http://localhost:3000/users/users_in_game/";
 const gameDrawingsUrl = "http://localhost:3000/drawings/game_drawings/";
@@ -56,6 +57,8 @@ function renderMultiplayerChoices(e) {
 }
 
 function newMultiplayerGame(e) {
+  const mainContainer = document.getElementById("container");
+  mainContainer.appendChild(createDiv("game-content"));
   console.log("User id", getUserId(), "creating new game...");
   fetch(gameUrl, {
     method: "POST",
@@ -72,7 +75,7 @@ function newMultiplayerGame(e) {
       return res.json();
     })
     .then((json) => {
-      console.log;
+      console.dir(json);
       renderLobby(json);
     });
 }
@@ -190,12 +193,23 @@ function startDrawing() {
   drawingLongPoll();
 }
 
+async function fetchUser() {
+  const response = await fetch(usersUrl + getUserId());
+
+  return response.json();
+}
+
 async function drawingLongPoll() {
-  const players = document.querySelectorAll(`[data-type="player"]`);
+  const players = await fetchUsersFromGame();
   const drawings = await fetchDrawingsFromGame();
+  const user = await fetchUser();
+
+  console.log(players);
+  console.log(drawings);
 
   if (players.length === drawings.length) {
     // continue to guessing phase
+    checkTurn(drawings, user.game_id);
   } else {
     setTimeout(() => {
       drawingLongPoll();
@@ -203,16 +217,16 @@ async function drawingLongPoll() {
   }
 }
 
-
 // beforehand, fetch all drawings for this game
 function checkTurn(drawings, gameId) {
   // Let's sort this just to be careful
   // We need every user to see the same drawing
-  drawings.sort((a,b) => a.id > b.id)
+  drawings.sort((a, b) => a.id > b.id);
   if (drawings.length == 0) {
     // endGame()
-    console.log('game is over')
-    return
+    console.log("game is over");
+    return;
   }
-  handleDrawingPrompt(drawings, gameId)
+  handleDrawingPrompt(drawings, gameId);
 }
+
