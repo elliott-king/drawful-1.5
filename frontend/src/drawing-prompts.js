@@ -104,7 +104,7 @@ function handleDrawingPrompt(drawings, game_id) {
   let gameContent = document.getElementById("game-content");
   if (checkUserMatchesDrawing(drawing)) {
     renderUserStall(gameContent, "This is your drawing!");
-    hasAllPromptsPollCycle(drawing, game_id, drawing);
+    hasAllPromptsPollCycle(drawing, game_id, drawings);
   } else {
     // TODO: time out user after 30 seconds
     const promptForm = createPromptForm(drawing, gameContent);
@@ -140,6 +140,7 @@ function hasAllPromptsPollCycle(drawing, game_id, drawings) {
   drawingHasAllPrompts(drawing, game_id).then((is_done) => {
     if (is_done) {
       clearPage();
+      // debugger
       handlePromptGuesses(drawings, game_id);
     } else {
       // wait 3 seconds & try again
