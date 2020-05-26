@@ -1,6 +1,8 @@
-gameUrl = "http://localhost:3000/games";
+const mainContainer = document.getElementById("container");
+const container = document.getElementById("game-content");
+const gameUrl = "http://localhost:3000/games";
 const joinGameUrl = "http://localhost:3000/games/add_user/";
-const userCountUrl = "http://localhost:3000/games/get_users/";
+const getUsersUrl = "http://localhost:3000/users/users_in_game/";
 
 function addMultiplayerButtons() {
   // Add one multiplayer button ->
@@ -16,9 +18,13 @@ function clearContent() {
 }
 
 function renderMultiplayerChoices(e) {
-  clearContent();
-  const newBtn = document.createElement("button");
-  newBtn.innerText = "New game";
+  const div1 = document.getElementById("div-1");
+  clearDiv(div1);
+  const div2 = document.getElementById("div-2");
+  clearDiv(div2);
+
+  const newBtn = createBtnElement("newGame", "New game");
+
   // newBtn.addEventListener('click', (e) => console.log('new game clicked'))
   newBtn.addEventListener("click", newMultiplayerGame);
 
@@ -30,13 +36,21 @@ function renderMultiplayerChoices(e) {
   joinGameForm.innerHTML = html;
   joinGameForm.addEventListener("submit", (e) => {
     e.preventDefault();
+
+    div1.remove();
+    div2.remove();
+
+    mainContainer.appendChild(createDiv("game-content"));
+
     joinGame(e.target.code.value);
   });
   // joinGameForm.addEventListener('submit', joinGame)
 
-  const contentDiv = document.getElementById("game-content");
-  contentDiv.append(newBtn);
-  contentDiv.append(joinGameForm);
+  // const contentDiv = document.getElementById("game-content");
+  // contentDiv.append(newBtn);
+  // contentDiv.append(joinGameForm);
+  div1.appendChild(newBtn);
+  div2.appendChild(joinGameForm);
 }
 
 function newMultiplayerGame(e) {
@@ -52,12 +66,12 @@ function newMultiplayerGame(e) {
     }),
   })
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       return res.json();
     })
     .then((json) => {
       console.log;
-      // renderLobby(json)
+      renderLobby(json);
     });
 }
 
@@ -75,11 +89,76 @@ function joinGame(gameCode) {
     }),
   })
     .then((res) => res.json())
-    .then(console.dir);
+    .then((json) => {
+      renderLobby(json);
+    });
 }
 
 function check_users() {
-  fetch(userCountUrl + getUserId())
+  fetch(getUsersUrl + getUserId())
     .then((res) => res.json())
     .then(console.dir);
+}
+
+function renderLobby(game) {
+  const container = document.getElementById("container");
+  container.className = "mp-lobby";
+
+  const contentDiv = document.getElementById("game-content");
+  contentDiv.innerHTML = game.code;
+
+  renderPlayerDivs(game.users, container);
+  playerLobbyLongPoll(container);
+}
+
+function renderPlayerDivs(users, parent) {
+  // saves players that are currently being displayed
+  const currentPlayers = mainContainer.querySelectorAll(`[data-type="player"]`);
+  let i = 1;
+
+  if (currentPlayers) {
+    i = currentPlayers.length + 1;
+  }
+
+  users.forEach((user) => {
+    const userDiv = document.createElement("div");
+    userDiv.dataset.type = "player";
+    // index is used to assign correct id
+    userDiv.id = `player-${i}`;
+    const userElem = document.createElement("h1");
+    userElem.innerHTML = user.id;
+
+    userDiv.appendChild(userElem);
+    parent.appendChild(userDiv);
+  });
+}
+
+async function fetchUsersFromGame() {
+  const response = await fetch(getUsersUrl + getUserId());
+
+  return response.json();
+}
+
+async function playerLobbyLongPoll(lobby) {
+  const clientSidePlayers = lobby.querySelectorAll(`[data-type="player"]`);
+  const serverSidePlayers = await fetchUsersFromGame();
+
+  if (clientSidePlayers.length === serverSidePlayers.length) {
+    console.log("same count");
+    setTimeout(() => {
+      playerLobbyLongPoll(lobby);
+    }, 4000);
+  } else if (clientSidePlayers.length < serverSidePlayers.length) {
+    console.log("success");
+    // const container = document.getElementById("container");
+    // create a array of only users that have just joined
+    const newUsers = serverSidePlayers.slice(clientSidePlayers.length);
+
+    // add them to the dom
+    renderPlayerDivs(newUsers, mainContainer);
+
+    setTimeout(() => {
+      playerLobbyLongPoll(lobby);
+    }, 4000);
+  }
 }
