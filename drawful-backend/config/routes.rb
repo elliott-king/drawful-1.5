@@ -3,9 +3,11 @@ Rails.application.routes.draw do
   resources :prompts
   resources :users
   
-  get '/games/get_users/:user_id', to: 'games#get_users'
   get '/games/user_count/:id', to: 'games#user_count'
   post '/games/add_user', to: 'games#add_user', as: 'join_game'
+
+  get '/users/users_in_game/:user_id', to: 'users#users_in_game'
+
   resources :drawings do
     member do
       get 'prompt_count'

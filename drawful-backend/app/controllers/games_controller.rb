@@ -33,13 +33,6 @@ class GamesController < ApplicationController
     render json: {count: Game.find(params[:id]).user_count}
   end
 
-  def get_users
-    user = User.find(params[:user_id]) 
-    game = user.game
-
-    render json: game, include: [:users]
-  end
-
   def show
     # game = Game.find(params[:game_id])
     # include users, drawings
