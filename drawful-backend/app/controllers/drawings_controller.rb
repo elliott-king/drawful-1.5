@@ -21,7 +21,7 @@ class DrawingsController < ApplicationController
     d = Drawing.new
     d.user_id = params[:user]
     d.game = u.game
-    dp = DrawingPrompt.create!(prompt_id: params[:prompt], drawing: d)
+    dp = DrawingPrompt.create!(prompt_id: params[:prompt], drawing: d, is_correct: true) 
     d.file = "#{id}.png"
     d.save!
   end
@@ -30,7 +30,7 @@ class DrawingsController < ApplicationController
     user = User.find(params[:user_id])
     drawings = user.game.drawings
 
-    render json: :drawings
+    render json: drawings
   end  
   
 
