@@ -1,8 +1,10 @@
 const mainContainer = document.getElementById("container");
 const container = document.getElementById("game-content");
+
 const gameUrl = "http://localhost:3000/games";
 const joinGameUrl = "http://localhost:3000/games/add_user/";
 const getUsersUrl = "http://localhost:3000/users/users_in_game/";
+const gameDrawingsUrl = "http://localhost:3000/drawings/game_drawings/";
 
 function addMultiplayerButtons() {
   // Add one multiplayer button ->
@@ -125,6 +127,8 @@ function renderPlayerDivs(users, parent) {
     userDiv.dataset.type = "player";
     // index is used to assign correct id
     userDiv.id = `player-${i}`;
+    i++;
+
     const userElem = document.createElement("h1");
     userElem.innerHTML = user.id;
 
@@ -144,13 +148,14 @@ async function playerLobbyLongPoll(lobby) {
   const serverSidePlayers = await fetchUsersFromGame();
 
   if (clientSidePlayers.length === serverSidePlayers.length) {
-    console.log("same count");
-    setTimeout(() => {
-      playerLobbyLongPoll(lobby);
-    }, 4000);
+    // calling it here for testing purposes
+    removeElements(clientSidePlayers);
+    startDrawing();
+
+    // setTimeout(() => {
+    //   playerLobbyLongPoll(lobby);
+    // }, 4000);
   } else if (clientSidePlayers.length < serverSidePlayers.length) {
-    console.log("success");
-    // const container = document.getElementById("container");
     // create a array of only users that have just joined
     const newUsers = serverSidePlayers.slice(clientSidePlayers.length);
 
@@ -159,6 +164,41 @@ async function playerLobbyLongPoll(lobby) {
 
     setTimeout(() => {
       playerLobbyLongPoll(lobby);
+    }, 4000);
+  } else if (serverSidePlayers.length === 4) {
+    removeElements(clientSidePlayers);
+    startDrawing();
+  }
+}
+
+function removeElements(elements) {
+  elements.forEach((elem) => elem.remove());
+}
+
+async function fetchDrawingsFromGame() {
+  const response = await fetch(gameDrawingsUrl + getUserId());
+
+  return response.json();
+}
+
+function startDrawing() {
+  const gameContent = document.getElementById("game-content");
+  clearDiv(gameContent);
+
+  createCanvas(gameContent);
+  addUploadButton(gameContent);
+  drawingLongPoll();
+}
+
+async function drawingLongPoll() {
+  const players = document.querySelectorAll(`[data-type="player"]`);
+  const drawings = await fetchDrawingsFromGame();
+
+  if (players.length === drawings.length) {
+    // continue to guessing phase
+  } else {
+    setTimeout(() => {
+      drawingLongPoll();
     }, 4000);
   }
 }
