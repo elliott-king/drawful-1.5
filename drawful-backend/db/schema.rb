@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_25_163640) do
+ActiveRecord::Schema.define(version: 2020_05_25_222925) do
 
   create_table "drawing_prompts", force: :cascade do |t|
     t.integer "prompt_id"
@@ -39,6 +39,13 @@ ActiveRecord::Schema.define(version: 2020_05_25_163640) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "guesses", force: :cascade do |t|
+    t.integer "drawing_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["drawing_id"], name: "index_guesses_on_drawing_id"
+  end
+
   create_table "prompts", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
@@ -53,4 +60,5 @@ ActiveRecord::Schema.define(version: 2020_05_25_163640) do
   end
 
   add_foreign_key "drawings", "users"
+  add_foreign_key "guesses", "drawings"
 end
