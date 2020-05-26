@@ -6,6 +6,8 @@ class Drawing < ApplicationRecord
   has_many :drawing_prompts
   has_many :prompts, through: :drawing_prompts
 
+  has_many :guesses
+
   # TODO: this will not work if we re-use prompts over multiple games
   def correct_prompt
     self.drawing_prompts.each do |dp|
