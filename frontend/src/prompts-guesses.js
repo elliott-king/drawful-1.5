@@ -2,7 +2,8 @@
 // handlePromptGuesses(testDrawings[0], 1)
 
 // Overall guessing functionality
-function handlePromptGuesses(drawing, game_id) {
+function handlePromptGuesses(drawings, game_id) {
+  let drawing = drawings.shift()
   let containerDiv = document.getElementById('game-content')
   if (checkUserMatchesDrawing(drawing)) {
     renderUserStall(containerDiv, 'People are guessing on your drawing')
@@ -16,7 +17,7 @@ function handlePromptGuesses(drawing, game_id) {
           submitGuess(drawing).then(() => {
             clearDiv(containerDiv)
             renderUserStall(containerDiv, 'Waiting for all guesses to come in')
-            hasAllGuessesPollCycle(drawing, game_id)
+            hasAllGuessesPollCycle(drawing, game_id, drawings)
           })
         })
       })
@@ -31,15 +32,15 @@ function submitGuess(drawing) {
   .then(json => console.log("guess submitted"))
 }
 
-function hasAllGuessesPollCycle(drawing, game_id) {
+function hasAllGuessesPollCycle(drawing, game_id, drawings) {
   promptsHaveAllGuesses(drawing, game_id)
     .then(is_done => {
-      console.log('the guessing round is done:', is_done)
       if (is_done) {
-        // checkTurn() // FIXME: build out
+        clearPage
+        checkTurn(drawings, game_id)
       } else {
         // wait 3 seconds & try again
-        setTimeout(() => hasAllGuessesPollCycle(drawing, game_id), 3000)
+        setTimeout(() => hasAllGuessesPollCycle(drawing, game_id, drawings), 3000)
       }
   })
 }

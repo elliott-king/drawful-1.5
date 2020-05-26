@@ -162,3 +162,17 @@ async function playerLobbyLongPoll(lobby) {
     }, 4000);
   }
 }
+
+
+// beforehand, fetch all drawings for this game
+function checkTurn(drawings, gameId) {
+  // Let's sort this just to be careful
+  // We need every user to see the same drawing
+  drawings.sort((a,b) => a.id > b.id)
+  if (drawings.length == 0) {
+    // endGame()
+    console.log('game is over')
+    return
+  }
+  handleDrawingPrompt(drawings, gameId)
+}
