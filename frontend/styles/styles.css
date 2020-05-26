@@ -13,6 +13,22 @@ canvas {
   height: 300px;
 }
 
+.h-select {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  display: grid;
+  grid-template-columns: 20% auto auto 20%;
+  grid-template-rows: auto;
+  grid-template-areas: 
+   "logo logo logo logo" 
+   ". elem1 elem2 ."
+   ". . . ."
+}
+
 .sp-draw {
   height: 100%;
   width: 100%;
@@ -45,6 +61,23 @@ canvas {
    ". . . ."
 }
 
+.mp-lobby {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  display: grid;
+  grid-template-columns: 10% 20% auto 20% 10%;
+  grid-template-rows: auto;
+  grid-template-areas: 
+   ". . content . ." 
+   ". player1 logo player2 ."
+   ". player3 logo player4 ."
+   ". . . . ."
+}
+
 #logo {
   grid-area: logo;
   place-self: center;
@@ -56,18 +89,38 @@ canvas {
   text-align: center;
 }
 
-
 #prompts {
   grid-area: prompts;
   place-self: center;
   text-align: center;
 }
 
-/* #game-content { */
-/*   display: flex; */
-/*   flex-direction: column; */
-/*   justify-content: center; */
-/*   align-items: center; */
-/*   text-align: center; */
-/*   min-height: 100vh; */
-/* } */
+#player-1 {
+  grid-area: player1;
+  place-self: center;
+}
+
+#player-2 {
+  grid-area: player2;
+  place-self: center;
+}
+
+#player-3 {
+  grid-area: player3;
+  place-self: center;
+}
+
+#player-4 {
+  grid-area: player4;
+  place-self: center;
+}
+
+#div-1 {
+  grid-area: elem1;
+  place-self: center;
+}
+
+#div-2 {
+  grid-area: elem2;
+  place-self: center;
+}

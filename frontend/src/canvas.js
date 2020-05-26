@@ -1,4 +1,4 @@
-function addUploadButton(div) {
+function addUploadButton(div, mode) {
   const btn = document.createElement("button");
   btn.setAttribute("id", "image-upload-button");
   btn.textContent = "Upload";
@@ -26,7 +26,11 @@ function addUploadButton(div) {
       // console.log('image upload response', res)
       // return res.json()
       // remove canvas elements and render image
-      displayImage();
+      if (mode === "sp") {
+        displayImage();
+      } else {
+        // render wait screen
+      }
     });
   });
 
