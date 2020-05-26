@@ -21,7 +21,7 @@ class GamesController < ApplicationController
     if game.user_count < 4
       user.game = game
       user.save
-      byebug
+      # byebug
 
       render json: game, include: [:users]
     else 
