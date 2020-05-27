@@ -121,7 +121,7 @@ function createPromptElement(image, prompt) {
   promptElement.dataset.correct =
     image.prompt_id === prompt.id ? "true" : "false";
   promptElement.dataset.action = "guess";
-  promptElement.innerHTML = prompt.title;
+  promptElement.innerHTML = prompt.title.toLowerCase();
 
   return promptElement;
 }
