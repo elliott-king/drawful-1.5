@@ -5,6 +5,7 @@
 function handlePromptGuesses(drawings, game_id) {
   let drawing = drawings.shift();
   let containerDiv = document.getElementById("game-content");
+  let mainContainer = document.getElementById("container");
   if (checkUserMatchesDrawing(drawing)) {
     renderUserStall(containerDiv, "People are guessing on your drawing");
     hasAllGuessesPollCycle(drawing, game_id, drawings);
@@ -15,7 +16,8 @@ function handlePromptGuesses(drawings, game_id) {
         const promptDiv = displayPrompts(
           prompts,
           correctPromptId,
-          containerDiv
+          mainContainer,
+          game_id
         );
         addGuessHandler(promptDiv, () => {
           submitGuess(drawing).then(() => {
@@ -39,7 +41,7 @@ function submitGuess(drawing) {
 function hasAllGuessesPollCycle(drawing, game_id, drawings) {
   promptsHaveAllGuesses(drawing, game_id).then((is_done) => {
     if (is_done) {
-      clearPage;
+      clearPage();
       checkTurn(drawings, game_id);
     } else {
       // wait 3 seconds & try again
@@ -88,10 +90,12 @@ function getCorrectPromptId(drawing) {
 }
 
 // Add prompts to containerDiv
-function displayPrompts(prompts, correctPromptId, containerDiv) {
+function displayPrompts(prompts, correctPromptId, containerDiv, game_id) {
   const image = {
     prompt_id: correctPromptId,
   };
+
+  containerDiv.className = "sp-guess";
 
   const promptDiv = document.createElement("div");
   promptDiv.id = "prompts";
@@ -104,7 +108,7 @@ function displayPrompts(prompts, correctPromptId, containerDiv) {
   });
   // FIXME: appendPromptSet automatically is size 4.
   // Should size to # of players
-  appendPromptSet(correctPromptElement, prompts, promptDiv);
+  appendPromptSet(correctPromptElement, prompts, promptDiv, game_id);
   return promptDiv;
 }
 
@@ -134,4 +138,3 @@ function addGuessHandler(promptDiv, onGuessCallback) {
     onGuessCallback();
   });
 }
-

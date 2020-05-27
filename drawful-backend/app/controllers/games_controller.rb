@@ -14,6 +14,14 @@ class GamesController < ApplicationController
     render json: game, include: [:users]
   end
 
+  def start_game
+    user = User.find(params[:user_id])
+    game = user.game
+
+    game.is_started = true
+    game.save
+  end
+  
   def add_user
     user = User.find_by(id: add_user_params[:user_id])
     game = Game.find_by(code: add_user_params[:code])
@@ -32,15 +40,20 @@ class GamesController < ApplicationController
     render json: {count: Game.find(params[:id]).user_count}
   end
 
+  def find_game 
+    game = Game.find(params[:game_id])
+
+    render json: game, include: [:users]
+  end
+
   def show
-    # game = Game.find(params[:game_id])
+    game = Game.find(params[:game_id])
     # include users, drawings
     # IF not_started: return game & users
     if !game.is_started
       render json: {users: game.users}
     elsif game.is_started && game.drawings.count == game.users.count
       render json: {drawings: game.drawings}
-      
     else 
       render json: {"error" => "you should not be here"}
     end
@@ -72,9 +85,6 @@ class GamesController < ApplicationController
   
   private 
   
-  def find_game 
-    game = Game.find(params[:game_id])
-  end
 
   def find_user
     user = User.find_by(id: add_user_params[:user_id])

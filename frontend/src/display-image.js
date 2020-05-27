@@ -54,7 +54,7 @@ function displayImage() {
     let allPrompts = await fetchPrompts();
     const correctPrompt = createPromptElement(image, image.prompt);
 
-    appendPromptSet(correctPrompt, allPrompts, promptDiv);
+    appendPromptSet(createPromptElement(correctPrompt), allPrompts, promptDiv);
 
     container.appendChild(promptDiv);
   }
@@ -123,30 +123,47 @@ function createPromptElement(image, prompt) {
   promptElement.dataset.correct =
     image.prompt_id === prompt.id ? "true" : "false";
   promptElement.dataset.action = "guess";
+  promptElement.dataset.id = prompt.id;
   promptElement.innerHTML = prompt.title;
 
   return promptElement;
 }
 
-function appendPromptSet(correctPrompt, allPrompts, promptDiv) {
+async function fetchGameInfo(game_id) {
+  const response = await fetch(`${gamesUrl}find_game/${game_id}`);
+
+  return response.json();
+}
+
+async function appendPromptSet(
+  correctPromptElem,
+  allPrompts,
+  promptDiv,
+  game_id
+) {
   // needs to be a set to prevent duplicate elements
-  const promptElementsSet = new Set();
-  promptElementsSet.add(correctPrompt);
+  // const promptElementsSet = new Set();
+  let promptElementArray = [correctPromptElem];
+
+  const game = await fetchGameInfo(game_id);
+  const users = game.users;
 
   // selects 3 random prompts, creates an element, and adds it to the array alongside the correct prompt
-  while (promptElementsSet.size < 4) {
+  while (promptElementArray.length < users.length) {
     let randomPrompt =
       allPrompts[Math.floor(Math.random() * allPrompts.length)];
-    if (randomPrompt !== correctPrompt) {
+    if (randomPrompt.id != correctPromptElem.dataset.id) {
       // TODO: I changed this, it was previously throwing a ReferenceError
-      promptElementsSet.add(
+      promptElementArray.push(
         createPromptElement({ prompt_id: -1 }, randomPrompt)
       );
+      let set = [...new Set(promptElementArray)];
+      promptElementArray = Array.from(set);
     }
   }
 
   // The randomization was not working, the correct element was always first
-  const promptElementArray = Array.from(promptElementsSet);
+  // const promptElementArray = Array.from(promptElementsSet);
   /* Randomize array in-place using Durstenfeld shuffle algorithm */
   // https://stackoverflow.com/questions/2450954
   function shuffleArray(array) {

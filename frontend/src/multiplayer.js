@@ -1,11 +1,16 @@
 const mainContainer = document.getElementById("container");
 const container = document.getElementById("game-content");
 
-const gameUrl = "http://localhost:3000/games";
+const gamesUrl = "http://localhost:3000/games/";
 const usersUrl = "http://localhost:3000/users/";
-const joinGameUrl = "http://localhost:3000/games/add_user/";
-const getUsersUrl = "http://localhost:3000/users/users_in_game/";
-const gameDrawingsUrl = "http://localhost:3000/drawings/game_drawings/";
+const drawingsUrl = "http://localhost:3000/drawings/";
+// const joinGameUrl = "http://localhost:3000/games/add_user/";
+const joinGameUrl = `${gamesUrl}add_user/`;
+// const getUsersUrl = "http://localhost:3000/users/users_in_game/";
+const getUsersUrl = `${usersUrl}users_in_game/`;
+// const gameDrawingsUrl = "http://localhost:3000/drawings/game_drawings/";
+const gameDrawingsUrl = `${drawingsUrl}game_drawings/`;
+const startGameUrl = `${gamesUrl}start_game/`;
 
 function addMultiplayerButtons() {
   // Add one multiplayer button ->
@@ -59,8 +64,12 @@ function renderMultiplayerChoices(e) {
 function newMultiplayerGame(e) {
   const mainContainer = document.getElementById("container");
   mainContainer.appendChild(createDiv("game-content"));
+  const divs = document.querySelectorAll(`[data-action="div"]`);
+  removeElements(divs);
+
   console.log("User id", getUserId(), "creating new game...");
-  fetch(gameUrl, {
+
+  fetch(gamesUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -75,9 +84,24 @@ function newMultiplayerGame(e) {
       return res.json();
     })
     .then((json) => {
-      console.dir(json);
       renderLobby(json);
+      addStartBtn();
     });
+}
+
+function setAsStarted() {
+  fetch(startGameUrl + getUserId());
+}
+
+function addStartBtn() {
+  const gameDiv = document.getElementById("game-content");
+  const btn = createBtnElement("start", "Start Game");
+
+  btn.addEventListener("click", () => {
+    setAsStarted();
+  });
+
+  gameDiv.appendChild(btn);
 }
 
 function joinGame(gameCode) {
@@ -128,6 +152,7 @@ function renderPlayerDivs(users, parent) {
   users.forEach((user) => {
     const userDiv = document.createElement("div");
     userDiv.dataset.type = "player";
+    userDiv.dataset.id = user.id;
     // index is used to assign correct id
     userDiv.id = `player-${i}`;
     i++;
@@ -148,19 +173,22 @@ async function fetchUsersFromGame() {
 
 async function playerLobbyLongPoll(lobby) {
   const clientSidePlayers = lobby.querySelectorAll(`[data-type="player"]`);
-  const serverSidePlayers = await fetchUsersFromGame();
+  const playerIds = [...clientSidePlayers].map((player) => player.dataset.id);
 
-  if (clientSidePlayers.length === serverSidePlayers.length) {
-    // calling it here for testing purposes
+  const game = await fetchUsersFromGame();
+  const serverSidePlayers = game.users;
+
+  if (game.is_started === true) {
+    // && player.count > 1
     removeElements(clientSidePlayers);
     startDrawing();
-
-    // setTimeout(() => {
-    //   playerLobbyLongPoll(lobby);
-    // }, 4000);
+  } else if (serverSidePlayers.length === 4) {
+    removeElements(clientSidePlayers);
+    startDrawing();
   } else if (clientSidePlayers.length < serverSidePlayers.length) {
-    // create a array of only users that have just joined
-    const newUsers = serverSidePlayers.slice(clientSidePlayers.length);
+    const newUsers = serverSidePlayers.filter(
+      (player) => !playerIds.includes(player.id.toString())
+    );
 
     // add them to the dom
     renderPlayerDivs(newUsers, mainContainer);
@@ -168,9 +196,10 @@ async function playerLobbyLongPoll(lobby) {
     setTimeout(() => {
       playerLobbyLongPoll(lobby);
     }, 4000);
-  } else if (serverSidePlayers.length === 4) {
-    removeElements(clientSidePlayers);
-    startDrawing();
+  } else if (clientSidePlayers.length === serverSidePlayers.length) {
+    setTimeout(() => {
+      playerLobbyLongPoll(lobby);
+    }, 4000);
   }
 }
 
@@ -189,7 +218,7 @@ function startDrawing() {
   clearDiv(gameContent);
 
   createCanvas(gameContent);
-  addUploadButton(gameContent);
+  addUploadButton(gameContent, "mp");
   drawingLongPoll();
 }
 
@@ -200,15 +229,14 @@ async function fetchUser() {
 }
 
 async function drawingLongPoll() {
-  const players = await fetchUsersFromGame();
+  const game = await fetchUsersFromGame();
+  const players = game.users;
   const drawings = await fetchDrawingsFromGame();
   const user = await fetchUser();
 
-  console.log(players);
-  console.log(drawings);
-
   if (players.length === drawings.length) {
     // continue to guessing phase
+    console.dir(drawings);
     checkTurn(drawings, user.game_id);
   } else {
     setTimeout(() => {
@@ -229,4 +257,3 @@ function checkTurn(drawings, gameId) {
   }
   handleDrawingPrompt(drawings, gameId);
 }
-
