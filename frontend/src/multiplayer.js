@@ -79,6 +79,7 @@ function newMultiplayerGame(e) {
 }
 
 function joinGame(gameCode) {
+  gameCode = gameCode.toUpperCase()
   fetch(joinGameUrl, {
     method: "POST",
     headers: {
