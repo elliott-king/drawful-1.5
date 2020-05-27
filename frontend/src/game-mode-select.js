@@ -3,13 +3,14 @@ function gameModeSelect() {
   const container = document.getElementById("container");
   container.className = "h-select";
 
-  const spDiv = createDiv("div-1", "div");
-  spDiv.appendChild(createBtnElement("sp", "Play Alone"));
-  container.appendChild(spDiv);
+  const gameButtonDiv = createDiv("div-1", "div");
+  gameButtonDiv.appendChild(createBtnElement("sp", "Play Alone"));
+  gameButtonDiv.appendChild(createBtnElement("mp", "Play With Friends"));
+  container.appendChild(gameButtonDiv);
 
-  const mpDiv = createDiv("div-2", "div");
-  mpDiv.appendChild(createBtnElement("mp", "Play With Friends"));
-  container.appendChild(mpDiv);
+  const usernameDiv = createDiv("div-2", "div");
+  usernameDiv.appendChild(createUsernameForm(usernameDiv))
+  container.appendChild(usernameDiv);
 
   container.addEventListener("click", (e) => {
     // console.dir(e.target.dataset.action);

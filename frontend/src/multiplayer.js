@@ -157,7 +157,7 @@ function renderPlayerDivs(users, parent) {
     i++;
 
     const userElem = document.createElement("h1");
-    userElem.innerHTML = user.id;
+    userElem.innerHTML = userNameFromUser(user)
 
     userDiv.appendChild(userElem);
     parent.appendChild(userDiv);
@@ -185,7 +185,7 @@ async function playerLobbyLongPoll(lobby) {
     removeElements(clientSidePlayers);
     startDrawing();
     addScoreNode();
-
+    
   } else if (clientSidePlayers.length < serverSidePlayers.length) {
     const newUsers = serverSidePlayers.filter(
       (player) => !playerIds.includes(player.id.toString())
