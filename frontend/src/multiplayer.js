@@ -130,6 +130,11 @@ function renderLobby(game) {
   const contentDiv = document.getElementById("game-content");
   contentDiv.innerHTML = game.code;
 
+  createMultiplayerHeader();
+  addGameCodeNode(game.code)
+
+
+  console.log(game)
   renderPlayerDivs(game.users, container);
   playerLobbyLongPoll(container);
 }
@@ -179,6 +184,8 @@ async function playerLobbyLongPoll(lobby) {
   } else if (serverSidePlayers.length === 4) {
     removeElements(clientSidePlayers);
     startDrawing();
+    addScoreNode();
+
   } else if (clientSidePlayers.length < serverSidePlayers.length) {
     const newUsers = serverSidePlayers.filter(
       (player) => !playerIds.includes(player.id.toString())
@@ -207,6 +214,40 @@ async function fetchDrawingsFromGame() {
   return response.json();
 }
 
+function createMultiplayerHeader() {
+  const container = document.getElementById('logo')
+  const header = document.createElement('div')
+  header.setAttribute('id', 'game-header')
+  container.append(header)
+}
+
+function addScoreNode() {
+  const header = document.getElementById('game-header')
+  const scoreNode = createScoreElem(0)
+  header.append(scoreNode)
+  return scoreNode
+}
+
+function addGameCodeNode(code) {
+  const header = document.getElementById('game-header')
+  const gameNode = document.createElement("h1");
+  gameNode.innerHTML = `
+    <h3><span id="code">${code}</span></h1>
+  `;
+  header.append(gameNode)
+  return gameNode
+}
+
+function removeGameCodeNode() {
+  const codeNode = document.getElementById('code')
+  codeNode.remove()
+}
+
+function incrementScore() {
+  const scoreSpan = document.getElementById('score')
+  scoreSpan.innerText = parseInt(scoreSpan.innerText) + 1
+}
+
 function startDrawing() {
   const gameContent = document.getElementById("game-content");
   clearDiv(gameContent);
@@ -231,6 +272,7 @@ async function drawingLongPoll() {
   if (players.length === drawings.length) {
     // continue to guessing phase
     console.dir(drawings);
+    removeGameCodeNode()
     checkTurn(drawings, user.game_id);
   } else {
     setTimeout(() => {

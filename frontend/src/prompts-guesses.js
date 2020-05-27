@@ -117,13 +117,9 @@ function addGuessHandler(promptDiv, onGuessCallback) {
   // TAKEN from display-image
   promptDiv.addEventListener("click", (e) => {
     if (e.target.dataset.action === "guess") {
-      // TODO: increment score
-
-      // const scoreElement = document.getElementById("score");
-      // imagesShown++;
 
       if (e.target.dataset.correct === "true") {
-        // score++;
+        incrementScore()
         changeElementColor(e.target, "green");
         console.log("You guessed right!");
       } else {

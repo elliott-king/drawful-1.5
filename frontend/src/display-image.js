@@ -102,7 +102,7 @@ function renderImage(image, parent) {
 function createScoreElem(score) {
   const scoreElement = document.createElement("h1");
   scoreElement.innerHTML = `
-    <h1>final score: <span id="score">${score}</span></h1>
+    <h3>final score: <span id="score">${score}</span></h1>
   `;
 
   return scoreElement;
