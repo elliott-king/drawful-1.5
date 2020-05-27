@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   resources :users
   
   get '/games/user_count/:id', to: 'games#user_count'
+  get '/games/start_game/:user_id', to: 'games#start_game'
+  get '/games/find_game/:game_id', to: 'games#find_game'
   post '/games/add_user', to: 'games#add_user', as: 'join_game'
 
   get '/users/users_in_game/:user_id', to: 'users#users_in_game'

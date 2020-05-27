@@ -27,8 +27,9 @@ function addUploadButton(div, mode) {
       // remove canvas elements and render image
       if (mode === "sp") {
         displayImage();
-      } else {
+      } else if (mode === "mp") {
         // render wait screen
+        renderWaitScreen(div);
       }
     });
   });
@@ -132,4 +133,13 @@ function createCanvas(div) {
 
   // pull random prompt and create/display element
   displayPrompt(div);
+}
+
+function renderWaitScreen(parent) {
+  console.dir(parent);
+  clearDiv(parent);
+  const waitMsg = document.createElement("h2");
+  waitMsg.textContent = "Please wait while the other players finish drawing";
+
+  parent.appendChild(waitMsg);
 }

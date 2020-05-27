@@ -3,11 +3,11 @@ function gameModeSelect() {
   const container = document.getElementById("container");
   container.className = "h-select";
 
-  const spDiv = createDiv("div-1");
+  const spDiv = createDiv("div-1", "div");
   spDiv.appendChild(createBtnElement("sp", "Play Alone"));
   container.appendChild(spDiv);
 
-  const mpDiv = createDiv("div-2");
+  const mpDiv = createDiv("div-2", "div");
   mpDiv.appendChild(createBtnElement("mp", "Play With Friends"));
   container.appendChild(mpDiv);
 
@@ -20,7 +20,7 @@ function gameModeSelect() {
       mpDiv.remove();
 
       createCanvas(gameDiv);
-      addUploadButton(gameDiv);
+      addUploadButton(gameDiv, "sp");
     } else if (e.target.dataset.action === "mp") {
       // container.appendChild(createDiv("game-content"));
 
@@ -44,9 +44,13 @@ function createBtnElement(action, text) {
   return btn;
 }
 
-function createDiv(id) {
+function createDiv(id, action) {
   const div = document.createElement("div");
   div.id = id;
+
+  if (action) {
+    div.dataset.action = action;
+  }
 
   return div;
 }

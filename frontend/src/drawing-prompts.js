@@ -1,102 +1,7 @@
-const testDrawingsShort = [
-  {
-    id: 9,
-    file: "IMG_8201.JPG",
-    user_id: 4,
-    created_at: "2020-05-22T17:32:22.150Z",
-    updated_at: "2020-05-22T17:32:22.150Z",
-    prompt_id: null,
-    game_id: null,
-  },
-  {
-    id: 10,
-    file: "IMG_8203.JPG",
-    user_id: 4,
-    created_at: "2020-05-22T17:32:22.175Z",
-    updated_at: "2020-05-22T17:32:22.175Z",
-    prompt_id: null,
-    game_id: null,
-  },
-];
-const testDrawings = [
-  {
-    id: 9,
-    file: "IMG_8201.JPG",
-    user_id: 4,
-    created_at: "2020-05-22T17:32:22.150Z",
-    updated_at: "2020-05-22T17:32:22.150Z",
-    prompt_id: null,
-    game_id: null,
-  },
-  {
-    id: 10,
-    file: "IMG_8203.JPG",
-    user_id: 4,
-    created_at: "2020-05-22T17:32:22.175Z",
-    updated_at: "2020-05-22T17:32:22.175Z",
-    prompt_id: null,
-    game_id: null,
-  },
-  {
-    id: 11,
-    file: "1ba812d6-588f-4010-8dbb-dc61eabe61d2.png",
-    user_id: 4,
-    created_at: "2020-05-22T17:32:45.690Z",
-    updated_at: "2020-05-22T17:32:45.690Z",
-    prompt_id: null,
-    game_id: null,
-  },
-  {
-    id: 12,
-    file: "471c0813-fc34-4637-9454-2ea86009aee3.png",
-    user_id: 4,
-    created_at: "2020-05-22T17:36:42.445Z",
-    updated_at: "2020-05-22T17:36:42.445Z",
-    prompt_id: null,
-    game_id: null,
-  },
-  {
-    id: 13,
-    file: "014e942e-2202-4a8b-a021-ba6097e10be7.png",
-    user_id: 4,
-    created_at: "2020-05-22T19:26:25.556Z",
-    updated_at: "2020-05-22T19:26:25.556Z",
-    prompt_id: null,
-    game_id: null,
-  },
-  {
-    id: 14,
-    file: "a2cad0d5-88e5-4a05-be17-6b7de24cce75.png",
-    user_id: 4,
-    created_at: "2020-05-22T19:27:46.550Z",
-    updated_at: "2020-05-22T19:27:46.550Z",
-    prompt_id: null,
-    game_id: null,
-  },
-  {
-    id: 15,
-    file: null,
-    user_id: 4,
-    created_at: "2020-05-25T16:39:41.244Z",
-    updated_at: "2020-05-25T16:39:41.244Z",
-    prompt_id: null,
-    game_id: 1,
-  },
-  {
-    id: 16,
-    file: "55c0d214-9a7d-411f-896d-2e96864841ed.png",
-    user_id: 39,
-    created_at: "2020-05-25T18:02:26.908Z",
-    updated_at: "2020-05-25T18:04:09.222Z",
-    prompt_id: null,
-    game_id: null,
-  },
-];
-// NOTE: testing data only
+const promptUrl = "http://localhost:3000/prompts";
+const gameUrl = "http://localhost:3000/games";
+const drawingUrl = "http://localhost:3000/drawings";
 
-// To test this, comment out everything in index.js, and add handleDrawingPrompt(testDrawings[7], 1)
-// You may have to change the game_id depending on your db
-// You can also put your user_id in one of the test drawings, to try that route if you want
 function handleDrawingPrompt(drawings, game_id) {
   let drawing = drawings[0];
   let gameContent = document.getElementById("game-content");
@@ -118,8 +23,22 @@ function handleDrawingPrompt(drawings, game_id) {
 }
 
 function clearPage() {
-  let div = document.getElementById("game-content");
-  clearDiv(div);
+  clearGameContent();
+  removePrompts();
+}
+
+function clearGameContent() {
+  const gameContent = document.getElementById("game-content");
+
+  clearDiv(gameContent);
+}
+
+function removePrompts() {
+  const prompDiv = document.getElementById("prompts");
+
+  if (prompDiv) {
+    prompDiv.remove();
+  }
 }
 
 function checkUserMatchesDrawing(drawing) {
@@ -195,10 +114,10 @@ function uploadPrompt(drawing, prompt) {
 function createPromptForm(drawing, contentDiv) {
   promptForm = document.createElement("form");
   promptForm.innerHTML = `
-  <label>New Prompt</label>
-  <input type="text" name="prompt" value="Suggest a name">
-  <input type="submit">
-  `;
+	<label>New Prompt</label>
+	<input type="text" name="prompt" value="Suggest a name">
+	<input type="submit">
+	`;
 
   clearDiv(contentDiv);
   // TODO: taken from display-image.js... refactor?
@@ -207,4 +126,3 @@ function createPromptForm(drawing, contentDiv) {
   contentDiv.append(promptForm);
   return promptForm;
 }
-

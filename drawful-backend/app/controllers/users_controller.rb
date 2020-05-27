@@ -7,9 +7,10 @@ class UsersController < ApplicationController
 
   def users_in_game
     user = User.find(params[:user_id])
-    users = user.game.users
+    # users = user.game.users
+    game = user.game
 
-    render json: users
+    render json: game, include: [:users]
   end
 
   def show

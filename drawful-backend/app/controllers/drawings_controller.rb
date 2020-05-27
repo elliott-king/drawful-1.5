@@ -32,7 +32,6 @@ class DrawingsController < ApplicationController
 
     render json: drawings
   end  
-  
 
   def prompts
     drawing = Drawing.find(params[:id])
