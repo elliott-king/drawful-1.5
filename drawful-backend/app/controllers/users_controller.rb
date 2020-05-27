@@ -23,4 +23,30 @@ class UsersController < ApplicationController
     user.update(username)
     render json: user
   end
+
+  def all_scores
+    user = User.find(params[:user_id])
+    game = user.game 
+    drawings = game.drawings
+
+    scores = {}
+    game.users.each do |user|
+      scores[user.id] = 0
+    end
+
+    drawings.each do |drawing|
+      drawing.guesses.each do |guess|
+        user_id = guess.user.id 
+        if guess.is_correct
+          scores[user_id] += 1
+        else 
+          user_who_fooled_you = guess.prompt.user.id
+          if user_who_fooled_you != guess.user.id
+            scores[user_who_fooled_you] += 1
+          end
+        end
+      end
+    end
+    render json: {scores: scores}
+  end
 end
