@@ -4,3 +4,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
   findOrCreateCookie();
   gameModeSelect();
 });
+
+const url = "http://localhost:3000/"
+const drawingsUrl = `${url}drawings/`
+const promptsUrl = `${url}prompts/`
+const gamesUrl = `${url}games/`
+const usersUrl = `${url}users/`

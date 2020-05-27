@@ -1,11 +1,9 @@
 const mainContainer = document.getElementById("container");
 const container = document.getElementById("game-content");
 
-const gameUrl = "http://localhost:3000/games";
-const usersUrl = "http://localhost:3000/users/";
-const joinGameUrl = "http://localhost:3000/games/add_user/";
-const getUsersUrl = "http://localhost:3000/users/users_in_game/";
-const gameDrawingsUrl = "http://localhost:3000/drawings/game_drawings/";
+const joinGameUrl = `${gamesUrl}add_user/`;
+const getUsersUrl = `${usersUrl}users_in_game/`;
+const gameDrawingsUrl = `${drawingsUrl}game_drawings/`;
 
 function addMultiplayerButtons() {
   // Add one multiplayer button ->
@@ -60,7 +58,7 @@ function newMultiplayerGame(e) {
   const mainContainer = document.getElementById("container");
   mainContainer.appendChild(createDiv("game-content"));
   console.log("User id", getUserId(), "creating new game...");
-  fetch(gameUrl, {
+  fetch(gamesUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

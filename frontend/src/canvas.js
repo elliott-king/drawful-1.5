@@ -16,8 +16,7 @@ function addUploadButton(div, mode) {
     // console.dir(`fd form promp id = ${prompt.dataset.id}`)
 
     // And send it
-    const url = "http://localhost:3000/drawings";
-    fetch(url, {
+    fetch(drawingsUrl, {
       method: "POST",
       // Should be good by just dropping it in the body
       // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
@@ -53,8 +52,7 @@ function addUploadButton(div, mode) {
 }
 
 function displayPrompt(div) {
-  const prompsUrl = "http://localhost:3000/prompts";
-  fetch(prompsUrl)
+  fetch(promptsUrl)
     .then((res) => res.json())
     .then(renderPrompt);
 

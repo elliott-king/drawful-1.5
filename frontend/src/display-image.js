@@ -5,8 +5,6 @@ function displayImage() {
   const promptDiv = document.createElement("div");
   promptDiv.id = "prompts";
 
-  const drawingsUrl = "http://localhost:3000/drawings/";
-  const promptsUrl = "http://localhost:3000/prompts/";
   const contentDiv = document.getElementById("game-content");
   let score = 0;
   let imagesShown = 0;

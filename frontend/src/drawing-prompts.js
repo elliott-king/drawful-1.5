@@ -1,5 +1,3 @@
-const promptUrl = "http://localhost:3000/prompts";
-const drawingUrl = "http://localhost:3000/drawings";
 const testDrawingsShort = [
   {
     id: 9,
@@ -154,11 +152,11 @@ function hasAllPromptsPollCycle(drawing, game_id, drawings) {
 
 // get number of submitted prompts & users, then compare the two vals
 function drawingHasAllPrompts(drawing, game_id) {
-  return fetch(`${drawingUrl}/${drawing.id}/prompt_count`)
+  return fetch(`${drawingsUrl}${drawing.id}/prompt_count`)
     .then((res) => res.json())
     .then((json) => json.count)
     .then((drawingCount) => {
-      return fetch(`${gameUrl}/user_count/${game_id}`)
+      return fetch(`${gamesUrl}user_count/${game_id}`)
         .then((res) => res.json())
         .then((json) => json.count)
         .then((userCount) => {
@@ -169,7 +167,7 @@ function drawingHasAllPrompts(drawing, game_id) {
 
 // upload a prompt for a given drawing
 function uploadPrompt(drawing, prompt) {
-  return fetch(promptUrl, {
+  return fetch(promptsUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

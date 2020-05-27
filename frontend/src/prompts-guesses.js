@@ -31,7 +31,7 @@ function handlePromptGuesses(drawings, game_id) {
 
 // Overly simple: just adds empty Guess object (to increase count of guesses)
 function submitGuess(drawing) {
-  return fetch(`${drawingUrl}/${drawing.id}/add_guess`, { method: "POST" })
+  return fetch(`${drawingsUrl}${drawing.id}/add_guess`, { method: "POST" })
     .then((res) => res.json())
     .then((json) => console.log("guess submitted"));
 }
@@ -54,12 +54,12 @@ function hasAllGuessesPollCycle(drawing, game_id, drawings) {
 // TODO: not a lot of error checking here
 // Checks the number of guesses made against the number of users
 function promptsHaveAllGuesses(drawing, game_id) {
-  return fetch(`${drawingUrl}/${drawing.id}/guess_count`)
+  return fetch(`${drawingsUrl}${drawing.id}/guess_count`)
     .then((res) => res.json())
     .then((json) => {
       const guessCount = json.count;
       console.log("guess count json", json);
-      return fetch(`${gameUrl}/user_count/${game_id}`)
+      return fetch(`${gamesUrl}user_count/${game_id}`)
         .then((res) => res.json())
         .then((json) => {
           console.log("user count json", json);
@@ -72,7 +72,7 @@ function promptsHaveAllGuesses(drawing, game_id) {
 
 // All prompts for a given drawing
 function getPrompts(drawing) {
-  return fetch(`${drawingUrl}/${drawing.id}/prompts`)
+  return fetch(`${drawingsUrl}${drawing.id}/prompts`)
     .then((res) => res.json())
     .then((json) => {
       console.log(json);
@@ -82,7 +82,7 @@ function getPrompts(drawing) {
 
 // Correct prompt id for a given drawing
 function getCorrectPromptId(drawing) {
-  return fetch(`${drawingUrl}/${drawing.id}/correct_prompt`)
+  return fetch(`${drawingsUrl}${drawing.id}/correct_prompt`)
     .then((res) => res.json())
     .then((json) => json.correct);
 }
