@@ -19,6 +19,23 @@ async function findOrCreateCookie() {
   }
 }
 
+async function setUsername(username) {
+  const userId = getUserId()
+  const response = await fetch(`${usersUrl}${userId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      username: username
+    })
+  })
+
+  json = await res.json()
+  console.log('set username', json)
+}
+
 function getUserId() {
   const userId = document.cookie.replace(
     /(?:(?:^|.*;\s*)user_id\s*\=\s*([^;]*).*$)|^.*$/,
