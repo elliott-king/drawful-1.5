@@ -2,37 +2,24 @@ function addUploadButton(div, mode) {
   const btn = document.createElement("button");
   btn.setAttribute("id", "image-upload-button");
   btn.textContent = "Upload";
-  btn.addEventListener("click", (event) => {
-    const canvas = document.getElementById("user-image-canvas");
-    const prompt = document.getElementById("prompt");
-    const dataUrl = canvas.toDataURL("image/png;base64;");
+  btn.addEventListener("click", (event) => submitDrawingFunction(div, mode));
+  setTimeout(() => submitDrawingFunction(div, mode), 5000) // DONOTSUBMIT
 
-    // https://stackoverflow.com/questions/21707595
-    const file = dataURLtoBlob(dataUrl);
-    let fd = new FormData();
-    fd.append("image", file);
-    fd.append("prompt", prompt.dataset.id);
-    fd.append("user", getUserId());
-    // console.dir(`fd form promp id = ${prompt.dataset.id}`)
+  div.appendChild(btn);
+}
 
-    // And send it
-    fetch(drawingsUrl, {
-      method: "POST",
-      // Should be good by just dropping it in the body
-      // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-      body: fd,
-    }).then((res) => {
-      // console.log('image upload response', res)
-      // return res.json()
-      // remove canvas elements and render image
-      if (mode === "sp") {
-        displayImage();
-      } else if (mode === "mp") {
-        // render wait screen
-        renderWaitScreen(div);
-      }
-    });
-  });
+function submitDrawingFunction(div, mode) {
+  const canvas = document.getElementById("user-image-canvas");
+  const prompt = document.getElementById("prompt");
+  const dataUrl = canvas.toDataURL("image/png;base64;");
+
+  // https://stackoverflow.com/questions/21707595
+  const file = dataURLtoBlob(dataUrl);
+  let fd = new FormData();
+  fd.append("image", file);
+  fd.append("prompt", prompt.dataset.id);
+  fd.append("user", getUserId());
+  // console.dir(`fd form promp id = ${prompt.dataset.id}`)
 
   // Convert dataURL to Blob object
   function dataURLtoBlob(dataURL) {
@@ -49,7 +36,23 @@ function addUploadButton(div, mode) {
     return new Blob([new Uint8Array(array)], { type: "image/png" });
   }
 
-  div.appendChild(btn);
+  // And send it
+  fetch(drawingsUrl, {
+    method: "POST",
+    // Should be good by just dropping it in the body
+    // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+    body: fd,
+  }).then((res) => {
+    // console.log('image upload response', res)
+    // return res.json()
+    // remove canvas elements and render image
+    if (mode === "sp") {
+      displayImage();
+    } else if (mode === "mp") {
+      // render wait screen
+      renderWaitScreen(div);
+    }
+  });
 }
 
 function displayPrompt(div) {
