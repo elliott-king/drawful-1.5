@@ -3,4 +3,6 @@ class User < ApplicationRecord
   belongs_to :game, optional: true
 
   has_many :drawings
+  has_many :guesses
+  has_many :prompts
 end

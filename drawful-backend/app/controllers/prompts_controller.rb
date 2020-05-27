@@ -6,7 +6,8 @@ class PromptsController < ApplicationController
 
   def create
     drawing = Drawing.find(params[:drawing])
-    prompt = Prompt.create!(title: params[:title])
+    user = User.find(params[:user_id])
+    prompt = Prompt.create!(title: params[:title], user: user)
     dp = DrawingPrompt.create!(drawing: drawing, prompt: prompt, is_correct: params[:is_correct])
     render json: prompt
   end

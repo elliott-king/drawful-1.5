@@ -1,4 +1,5 @@
 class Guess < ApplicationRecord
-  # TODO: connect to user
   belongs_to :drawing
+  belongs_to :user 
+  belongs_to :prompt
 end

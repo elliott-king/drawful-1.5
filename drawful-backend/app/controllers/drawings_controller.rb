@@ -50,7 +50,10 @@ class DrawingsController < ApplicationController
   # TODO: maybe consider making a Guesses controller
   def add_guess
     drawing = Drawing.find(params[:id])
-    Guess.create(drawing: drawing)
+    user = User.find(params[:user_id])
+    prompt = Prompt.find(params[:prompt_id])
+    is_correct = params[:is_correct]
+    Guess.create(drawing: drawing, user: user, prompt: prompt, is_correct: is_correct)
     render json: drawing
   end
 
