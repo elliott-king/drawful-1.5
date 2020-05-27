@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post '/games/add_user', to: 'games#add_user', as: 'join_game'
 
   get '/users/users_in_game/:user_id', to: 'users#users_in_game'
+  get '/users/all_scores/:user_id', to: 'users#all_scores'
 
   get '/drawings/game_drawings/:user_id', to: 'drawings#game_drawings'
 

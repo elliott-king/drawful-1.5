@@ -93,6 +93,7 @@ function uploadPrompt(drawing, prompt) {
       Accept: "application/json",
     },
     body: JSON.stringify({
+      user_id: getUserId(),
       drawing: drawing.id,
       is_correct: false,
       title: prompt,

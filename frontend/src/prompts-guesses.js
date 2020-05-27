@@ -19,8 +19,8 @@ function handlePromptGuesses(drawings, game_id) {
           mainContainer,
           game_id
         );
-        addGuessHandler(promptDiv, () => {
-          submitGuess(drawing).then(() => {
+        addGuessHandler(promptDiv, function(promptId, isCorrect) {
+          submitGuess(drawing, promptId, isCorrect).then(() => {
             clearDiv(containerDiv);
             renderUserStall(containerDiv, "Waiting for all guesses to come in");
             hasAllGuessesPollCycle(drawing, game_id, drawings);
@@ -32,10 +32,21 @@ function handlePromptGuesses(drawings, game_id) {
 }
 
 // Overly simple: just adds empty Guess object (to increase count of guesses)
-function submitGuess(drawing) {
-  return fetch(`${drawingsUrl}${drawing.id}/add_guess`, { method: "POST" })
+function submitGuess(drawing, promptId, isCorrect) {
+  return fetch(`${drawingsUrl}${drawing.id}/add_guess`, { 
+    method: "POST", 
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      user_id: getUserId(),
+      prompt_id: promptId,
+      is_correct: isCorrect
+    })
+  })
     .then((res) => res.json())
-    .then((json) => console.log("guess submitted"));
+    .then((json) => console.log("guess submitted", json));
 }
 
 function hasAllGuessesPollCycle(drawing, game_id, drawings) {
@@ -43,6 +54,7 @@ function hasAllGuessesPollCycle(drawing, game_id, drawings) {
     if (is_done) {
       clearPage();
       checkTurn(drawings, game_id);
+      // showScoreScreen(drawings, game_id);
     } else {
       // wait 3 seconds & try again
       setTimeout(
@@ -115,13 +127,15 @@ function displayPrompts(prompts, correctPromptId, containerDiv, game_id) {
 // Handle click on any prompt
 function addGuessHandler(promptDiv, onGuessCallback) {
   // TAKEN from display-image
+  let isCorrect = false
   promptDiv.addEventListener("click", (e) => {
     if (e.target.dataset.action === "guess") {
 
       if (e.target.dataset.correct === "true") {
-        incrementScore()
+        // incrementScore()
         changeElementColor(e.target, "green");
         console.log("You guessed right!");
+        isCorrect = true
       } else {
         const correctAns = promptDiv.querySelector(`[data-correct="true"]`);
         changeElementColor(correctAns, "green");
@@ -129,8 +143,9 @@ function addGuessHandler(promptDiv, onGuessCallback) {
         console.log("You guessed wrong, sucker");
       }
     }
+    const promptId = e.target.dataset.id 
     // TODO: send to backend whether or not this is correct
     // Currently oversimplified
-    onGuessCallback();
+    onGuessCallback(promptId, isCorrect);
   });
 }
