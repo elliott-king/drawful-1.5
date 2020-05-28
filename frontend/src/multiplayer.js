@@ -228,7 +228,7 @@ function createMultiplayerHeader() {
 
 function addScoreNode() {
   const header = document.getElementById("game-header");
-  const scoreNode = createScoreElem(0);
+  const scoreNode = createScoreElem(getUsername(), 0);
   header.append(scoreNode);
   return scoreNode;
 }

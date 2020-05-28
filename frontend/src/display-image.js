@@ -35,7 +35,7 @@ function displayImage() {
   }
 
   function displayScore() {
-    promptDiv.prepend(createScoreElem(score));
+    promptDiv.prepend(createScoreElem(getUsername(), score));
     promptDiv.appendChild(createStartOverBtn);
   }
 
