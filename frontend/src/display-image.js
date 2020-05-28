@@ -143,34 +143,34 @@ async function fetchGameInfo(game_id) {
 }
 
 async function appendPromptSet(
-  correctPromptElem,
+  correctPrompt,
   allPrompts,
   promptDiv,
   game_id
 ) {
-  // needs to be a set to prevent duplicate elements
-  // const promptElementsSet = new Set();
-  let promptElementArray = [correctPromptElem];
 
+  let promptArray = [correctPrompt]
   const game = await fetchGameInfo(game_id);
   const users = game.users;
 
-  // selects 3 random prompts, creates an element, and adds it to the array alongside the correct prompt
-  while (promptElementArray.length < users.length) {
-    let randomPrompt =
-      allPrompts[Math.floor(Math.random() * allPrompts.length)];
-    if (randomPrompt.id != correctPromptElem.dataset.id) {
-      // TODO: I changed this, it was previously throwing a ReferenceError
-      promptElementArray.push(
-        createPromptElement({ prompt_id: -1 }, randomPrompt)
-      );
-      let set = [...new Set(promptElementArray)];
-      promptElementArray = Array.from(set);
+  allPrompts.forEach((prompt) => {
+    if (prompt.id != correctPrompt.id && promptArray.length < users.length){
+      promptArray.push(prompt)
     }
-  }
+  })
+  shuffleArray(promptArray)
+  promptArray.forEach((prompt) => {
+    let element = null
+    if (prompt.id == correctPrompt.id) {
+      element = createPromptElement({prompt_id: prompt.id}, prompt)
+    } else {
+      element = createPromptElement({ prompt_id: -1}, prompt)
+    }
+    promptDiv.appendChild(element)
+  })
 
-  // The randomization was not working, the correct element was always first
-  // const promptElementArray = Array.from(promptElementsSet);
+  promptElementArray.forEach((element) => promptDiv.appendChild(element));
+
   /* Randomize array in-place using Durstenfeld shuffle algorithm */
   // https://stackoverflow.com/questions/2450954
   function shuffleArray(array) {
@@ -181,9 +181,6 @@ async function appendPromptSet(
       array[j] = temp;
     }
   }
-  shuffleArray(promptElementArray);
-
-  promptElementArray.forEach((element) => promptDiv.appendChild(element));
 }
 
 function changeElementColor(element, color) {
