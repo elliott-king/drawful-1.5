@@ -257,6 +257,7 @@ function startDrawing() {
   const gameContent = document.getElementById("game-content");
   clearDiv(gameContent);
 
+  createDrawTimer(gameContent, 'mp')
   createCanvas(gameContent);
   addUploadButton(gameContent, "mp");
   drawingLongPoll();
