@@ -72,3 +72,8 @@ function createUsernameForm(parentDiv) {
   })
   return form
 }
+
+async function clearUser() {
+  document.cookie = `user_id=`
+  localStorage.clear()
+}
