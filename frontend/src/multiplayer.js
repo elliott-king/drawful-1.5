@@ -228,7 +228,7 @@ function createMultiplayerHeader() {
 
 function addScoreNode() {
   const header = document.getElementById("game-header");
-  const scoreNode = createScoreElem(0);
+  const scoreNode = createScoreElem(getUsername(), 0);
   header.append(scoreNode);
   return scoreNode;
 }
@@ -257,6 +257,7 @@ function startDrawing() {
   const gameContent = document.getElementById("game-content");
   clearDiv(gameContent);
 
+  createDrawTimer(gameContent, 'mp')
   createCanvas(gameContent);
   addUploadButton(gameContent, "mp");
   drawingLongPoll();
@@ -304,11 +305,11 @@ function endGame() {
   const leftDiv = document.getElementById("game-content");
   const rightDiv = document.getElementById("score");
 
-  leftDiv.innerHTML = "Game is over!";
-  clearDiv(rightDiv);
-  rightDiv.appendChild(createBtnElement("start-over", "Start Over"));
+  leftDiv.innerHTML = "Game is over! ";
+  // clearDiv(rightDiv);
+  leftDiv.appendChild(createBtnElement("start-over", "Start Over"));
 
-  rightDiv.addEventListener("click", (e) => {
+  leftDiv.addEventListener("click", (e) => {
     if (e.target.dataset.action === "start-over") {
       gameModeSelect();
     }

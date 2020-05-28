@@ -3,12 +3,42 @@ function addUploadButton(div, mode) {
   btn.setAttribute("id", "image-upload-button");
   btn.textContent = "Upload";
   btn.addEventListener("click", (event) => submitDrawingFunction(div, mode));
-  setTimeout(() => submitDrawingFunction(div, mode), 30000)
 
   div.appendChild(btn);
 }
 
+function createDrawTimer(div, mode) {
+  const timer = document.createElement('p')
+  timer.setAttribute('id', 'timer')
+  div.appendChild(timer)
+
+  createDrawingTimeout(() => submitDrawingFunction(div, mode), 30000)
+}
+
+function createDrawingTimeout(callback, ms) {
+  let seconds = (ms / 1000)
+  seconds = Math.ceil(seconds)
+
+  timerInterval(callback, seconds)
+}
+
+function timerInterval(callback, cycles) {
+  const timer = document.getElementById('timer')
+  if (!timer) return 
+  if (cycles < 1) {
+    return callback()
+  }
+  timer.textContent = cycles
+  setTimeout(() => timerInterval(callback, cycles - 1), 1000)
+}
+
+function removeTimer() {
+  const timer = document.getElementById('timer')
+  if (timer) timer.remove()
+}
+
 function submitDrawingFunction(div, mode) {
+  removeTimer()
   const canvas = document.getElementById("user-image-canvas");
   const prompt = document.getElementById("prompt");
   const dataUrl = canvas.toDataURL("image/png;base64;");

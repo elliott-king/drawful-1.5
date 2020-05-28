@@ -6,19 +6,22 @@ function handlePromptGuesses(drawings, game_id) {
   let drawing = drawings.shift();
   let containerDiv = document.getElementById("game-content");
   let mainContainer = document.getElementById("container");
-  if (checkUserMatchesDrawing(drawing)) {
-    renderUserStall(containerDiv, "People are guessing on your drawing");
-    hasAllGuessesPollCycle(drawing, game_id, drawings);
-  } else {
-    getPrompts(drawing).then((prompts) => {
-      getCorrectPromptId(drawing).then((correctPromptId) => {
-        renderImage(drawing, containerDiv);
-        const promptDiv = displayPrompts(
-          prompts,
-          correctPromptId,
-          mainContainer,
-          game_id
-        );
+  getPrompts(drawing).then((prompts) => {
+    getCorrectPromptId(drawing).then((correctPromptId) => {
+      renderImage(drawing, containerDiv);
+      const promptDiv = displayPrompts(
+        prompts,
+        correctPromptId,
+        mainContainer,
+        game_id
+      );
+      if (checkUserMatchesDrawing(drawing)) {
+        renderUserStall(containerDiv, "People are guessing on your drawing");
+        hasAllGuessesPollCycle(drawing, game_id, drawings);
+      } else {
+        const instruction = document.createElement('p')
+        instruction.innerText = "Guess the real name!"
+        containerDiv.appendChild(instruction)
         addGuessHandler(promptDiv, function (promptId, isCorrect) {
           submitGuess(drawing, promptId, isCorrect).then(() => {
             clearDiv(containerDiv);
@@ -26,9 +29,9 @@ function handlePromptGuesses(drawings, game_id) {
             hasAllGuessesPollCycle(drawing, game_id, drawings);
           });
         });
-      });
-    });
-  }
+      }
+    })
+  })
 }
 
 // Overly simple: just adds empty Guess object (to increase count of guesses)

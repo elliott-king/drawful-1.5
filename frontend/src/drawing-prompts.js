@@ -5,11 +5,11 @@ const drawingUrl = "http://localhost:3000/drawings";
 function handleDrawingPrompt(drawings, game_id) {
   let drawing = drawings[0];
   let gameContent = document.getElementById("game-content");
+  clearDiv(gameContent)
+  renderImage(drawing, gameContent);
   if (checkUserMatchesDrawing(drawing)) {
     removeScores();
     setGrid("sp-draw");
-    // clearDiv(gameContent);
-    gameContent.innerHTML = "";
     renderUserStall(gameContent, "Players are viewing your Drawing!");
     hasAllPromptsPollCycle(drawing, game_id, drawings);
   } else {
@@ -142,13 +142,10 @@ function uploadPrompt(drawing, prompt) {
 function createPromptForm(drawing, contentDiv) {
   promptForm = document.createElement("form");
   promptForm.innerHTML = `
-	<label>New Prompt</label>
+  <p>Give a name to this drawing</p>
 	<input type="text" name="prompt" value="Suggest a name">
 	<input type="submit">
 	`;
-
-  clearDiv(contentDiv);
-  renderImage(drawing, contentDiv);
 
   contentDiv.append(promptForm);
   return promptForm;
