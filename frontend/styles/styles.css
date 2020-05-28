@@ -82,7 +82,7 @@ canvas {
    ". . content . ." 
    ". player1 logo player2 ."
    ". player3 logo player4 ."
-   ". . . . ."
+   ". player4 . player6 ."
 }
 
 #logo {
@@ -127,6 +127,16 @@ canvas {
 }
 
 #player-4 {
+  grid-area: player4;
+  place-self: center;
+}
+
+#player-5 {
+  grid-area: player4;
+  place-self: center;
+}
+
+#player-6 {
   grid-area: player4;
   place-self: center;
 }
