@@ -98,7 +98,7 @@ function addStartBtn() {
 }
 
 function joinGame(gameCode) {
-  gameCode = gameCode.toUpperCase()
+  gameCode = gameCode.toUpperCase();
   fetch(joinGameUrl, {
     method: "POST",
     headers: {
@@ -131,10 +131,9 @@ function renderLobby(game) {
   contentDiv.innerHTML = game.code;
 
   createMultiplayerHeader();
-  addGameCodeNode(game.code)
+  // addGameCodeNode(game.code)
 
-
-  console.log(game)
+  console.log(game);
   renderPlayerDivs(game.users, container);
   playerLobbyLongPoll(container);
 }
@@ -157,7 +156,7 @@ function renderPlayerDivs(users, parent) {
     i++;
 
     const userElem = document.createElement("h1");
-    userElem.innerHTML = userNameFromUser(user)
+    userElem.innerHTML = userNameFromUser(user);
 
     userDiv.appendChild(userElem);
     parent.appendChild(userDiv);
@@ -184,8 +183,7 @@ async function playerLobbyLongPoll(lobby) {
   } else if (serverSidePlayers.length === 4) {
     removeElements(clientSidePlayers);
     startDrawing();
-    addScoreNode();
-    
+    // addScoreNode();
   } else if (clientSidePlayers.length < serverSidePlayers.length) {
     const newUsers = serverSidePlayers.filter(
       (player) => !playerIds.includes(player.id.toString())
@@ -215,37 +213,37 @@ async function fetchDrawingsFromGame() {
 }
 
 function createMultiplayerHeader() {
-  const container = document.getElementById('logo')
-  const header = document.createElement('div')
-  header.setAttribute('id', 'game-header')
-  container.append(header)
+  const container = document.getElementById("logo");
+  const header = document.createElement("div");
+  header.setAttribute("id", "game-header");
+  container.append(header);
 }
 
 function addScoreNode() {
-  const header = document.getElementById('game-header')
-  const scoreNode = createScoreElem(0)
-  header.append(scoreNode)
-  return scoreNode
+  const header = document.getElementById("game-header");
+  const scoreNode = createScoreElem(0);
+  header.append(scoreNode);
+  return scoreNode;
 }
 
 function addGameCodeNode(code) {
-  const header = document.getElementById('game-header')
+  const header = document.getElementById("game-header");
   const gameNode = document.createElement("h1");
   gameNode.innerHTML = `
     <h3><span id="code">${code}</span></h1>
   `;
-  header.append(gameNode)
-  return gameNode
+  header.append(gameNode);
+  return gameNode;
 }
 
 function removeGameCodeNode() {
-  const codeNode = document.getElementById('code')
-  codeNode.remove()
+  const codeNode = document.getElementById("code");
+  codeNode.remove();
 }
 
 function incrementScore() {
-  const scoreSpan = document.getElementById('score')
-  scoreSpan.innerText = parseInt(scoreSpan.innerText) + 1
+  const scoreSpan = document.getElementById("score");
+  scoreSpan.innerText = parseInt(scoreSpan.innerText) + 1;
 }
 
 function startDrawing() {
@@ -271,8 +269,8 @@ async function drawingLongPoll() {
 
   if (players.length === drawings.length) {
     // continue to guessing phase
-    console.dir(drawings);
-    removeGameCodeNode()
+    // console.dir(drawings);
+    // removeGameCodeNode();
     checkTurn(drawings, user.game_id);
   } else {
     setTimeout(() => {
@@ -287,9 +285,25 @@ function checkTurn(drawings, gameId) {
   // We need every user to see the same drawing
   drawings.sort((a, b) => a.id > b.id);
   if (drawings.length == 0) {
-    // endGame()
     console.log("game is over");
-    return;
+    endGame();
+    // return;
+  } else {
+    handleDrawingPrompt(drawings, gameId);
   }
-  handleDrawingPrompt(drawings, gameId);
+}
+
+function endGame() {
+  const leftDiv = document.getElementById("game-content");
+  const rightDiv = document.getElementById("score");
+
+  leftDiv.innerHTML = "Game is over!";
+  clearDiv(rightDiv);
+  rightDiv.appendChild(createBtnElement("start-over", "Start Over"));
+
+  rightDiv.addEventListener("click", (e) => {
+    if (e.target.dataset.action === "start-over") {
+      gameModeSelect();
+    }
+  });
 }

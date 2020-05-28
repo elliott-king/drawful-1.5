@@ -93,16 +93,25 @@ function selectRandom(array) {
 }
 
 function renderImage(image, parent) {
+  console.dir(image);
+
+  const imageDiv = document.createElement("div");
+  const imageOwner = document.createElement("h3");
+  imageOwner.innerHTML = `Drawn by: ${image.user.id}`;
+
   const imageElement = document.createElement("img");
   imageElement.src = "assets/" + image.file;
 
-  parent.appendChild(imageElement);
+  imageDiv.appendChild(imageOwner);
+  imageDiv.appendChild(imageElement);
+
+  parent.appendChild(imageDiv);
 }
 
-function createScoreElem(score) {
-  const scoreElement = document.createElement("h1");
+function createScoreElem(username, score) {
+  const scoreElement = document.createElement("h3");
   scoreElement.innerHTML = `
-    <h3>final score: <span id="score">${score}</span></h1>
+    <h3>${username} score: <span id="score">${score}</span></h1>
   `;
 
   return scoreElement;
