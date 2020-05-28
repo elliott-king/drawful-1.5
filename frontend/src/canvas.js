@@ -3,7 +3,7 @@ function addUploadButton(div, mode) {
   btn.setAttribute("id", "image-upload-button");
   btn.textContent = "Upload";
   btn.addEventListener("click", (event) => submitDrawingFunction(div, mode));
-  setTimeout(() => submitDrawingFunction(div, mode), 5000) // DONOTSUBMIT
+  setTimeout(() => submitDrawingFunction(div, mode), 30000)
 
   div.appendChild(btn);
 }

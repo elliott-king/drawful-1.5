@@ -32,8 +32,9 @@ async function setUsername(username) {
     })
   })
 
-  json = await res.json()
-  console.log('set username', json)
+  json = await response.json()
+  localStorage.setItem('username', json.username)
+  return json.username
 }
 
 function getUserId() {
@@ -43,4 +44,31 @@ function getUserId() {
   );
 
   return userId;
+}
+
+function getUsername() {
+  const storedName = localStorage.getItem('username')
+  if (storedName) return storedName
+  else return getUserId()
+}
+
+function userNameFromUser(user) {
+  if (!user.username) return user.id 
+  return user.username
+}
+
+function createUsernameForm(parentDiv) {
+  const form = document.createElement('form')
+  form.innerHTML = `
+  <input type="text" name="username" placeholder="Enter a user name">
+  <input type="submit">
+  `
+  form.addEventListener('submit', (event) => {
+    event.preventDefault()
+    setUsername(event.target.username.value)
+      .then(json => {
+        parentDiv.innerHTML = json
+      })
+  })
+  return form
 }

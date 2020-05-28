@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_27_200452) do
+ActiveRecord::Schema.define(version: 2020_05_28_123204) do
 
   create_table "drawing_prompts", force: :cascade do |t|
     t.integer "prompt_id"
@@ -27,7 +27,6 @@ ActiveRecord::Schema.define(version: 2020_05_27_200452) do
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "prompt_id"
     t.integer "game_id"
     t.index ["user_id"], name: "index_drawings_on_user_id"
   end

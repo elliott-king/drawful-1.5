@@ -156,7 +156,7 @@ function renderPlayerDivs(users, parent) {
     i++;
 
     const userElem = document.createElement("h1");
-    userElem.innerHTML = user.id;
+    userElem.innerHTML = userNameFromUser(user);
 
     userDiv.appendChild(userElem);
     parent.appendChild(userDiv);

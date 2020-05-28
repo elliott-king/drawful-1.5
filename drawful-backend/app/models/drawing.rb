@@ -8,7 +8,6 @@ class Drawing < ApplicationRecord
 
   has_many :guesses
 
-  # TODO: this will not work if we re-use prompts over multiple games
   def correct_prompt
     self.drawing_prompts.each do |dp|
       if dp.is_correct

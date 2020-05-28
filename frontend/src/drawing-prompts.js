@@ -148,7 +148,6 @@ function createPromptForm(drawing, contentDiv) {
 	`;
 
   clearDiv(contentDiv);
-  // TODO: taken from display-image.js... refactor?
   renderImage(drawing, contentDiv);
 
   contentDiv.append(promptForm);
