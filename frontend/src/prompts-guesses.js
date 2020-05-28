@@ -116,12 +116,13 @@ function displayPrompts(prompts, correctPromptId, containerDiv, game_id) {
   promptDiv.id = "prompts";
   containerDiv.appendChild(promptDiv);
 
-  let correctPromptElement = null;
+  let correct_prompt = null
   prompts.forEach((prompt) => {
-    if (prompt.id == image.prompt_id)
-      correctPromptElement = createPromptElement(image, prompt);
+    if (prompt.id == image.prompt_id) {
+      correct_prompt = prompt
+    }
   });
-  appendPromptSet(correctPromptElement, prompts, promptDiv, game_id);
+  appendPromptSet(correct_prompt, prompts, promptDiv, game_id);
   return promptDiv;
 }
 
