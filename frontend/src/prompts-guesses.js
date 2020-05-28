@@ -118,8 +118,6 @@ function displayPrompts(prompts, correctPromptId, containerDiv, game_id) {
     if (prompt.id == image.prompt_id)
       correctPromptElement = createPromptElement(image, prompt);
   });
-  // FIXME: appendPromptSet automatically is size 4.
-  // Should size to # of players
   appendPromptSet(correctPromptElement, prompts, promptDiv, game_id);
   return promptDiv;
 }
@@ -144,8 +142,7 @@ function addGuessHandler(promptDiv, onGuessCallback) {
       }
     }
     const promptId = e.target.dataset.id 
-    // TODO: send to backend whether or not this is correct
-    // Currently oversimplified
+    // TODO: maybe make this so it is not an ugly callback?
     onGuessCallback(promptId, isCorrect);
   });
 }

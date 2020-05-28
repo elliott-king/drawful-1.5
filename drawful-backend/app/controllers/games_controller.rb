@@ -57,30 +57,6 @@ class GamesController < ApplicationController
     else 
       render json: {"error" => "you should not be here"}
     end
-
-    # if started, return game & users -> JS will infer game has started, then request for prompt (POST)
-    # when finished w/ drawing, POST create it w/ game id
-    # setTimeout(2 seconds or something), then:
-    # IF started && # drawings == # users, then...
-    # send all drawings to frontend
-
-    # LOOP UNTIL DONE W/ DRAWINGS: 
-
-    # (make sure on frontend, don't display theirs)
-
-    # (POST fake prompts, create prompt & associate it w/ drawing) post will have to include drawing_id:
-    # (after x seconds, send all POSTS)
-    # (long poll to see if one prompt has been sent through)
-    # GET to single drawings, count # prompts, check if # users == this.users.size
-
-    # (on frontend, display & choose each prompt for each drawing)
-    # (GET to drawing, display prompts)
-    # (drawing, click prompt => increment score if correct) //TODO: if wrong, increment other player's score
-    
-    # END LOOP
-
-    # show their score (on frontend)
-    # link to main page?
   end
   
   private 

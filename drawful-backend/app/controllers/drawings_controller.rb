@@ -47,7 +47,6 @@ class DrawingsController < ApplicationController
     render json: {count: drawing.prompts.count}
   end
 
-  # TODO: maybe consider making a Guesses controller
   def add_guess
     drawing = Drawing.find(params[:id])
     user = User.find(params[:user_id])
