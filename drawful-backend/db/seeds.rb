@@ -1,25 +1,23 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
-
+DrawingPrompt.destroy_all
+Guess.destroy_all
 Prompt.destroy_all
 Drawing.destroy_all
 User.destroy_all
+Game.destroy_all
 
-u = User.create(username: "Luis")
-g = Game.create()
+g = Game.create!
+u = User.create!(username: "SeedUser", game: g)
 
 5.times do 
-  Prompt.create!(title: "#{Faker::DcComics.hero} #{Faker::Verb.ing_form} #{Faker::Space.planet}")
+  Prompt.create!(title: "#{Faker::DcComics.hero} #{Faker::Verb.ing_form} #{Faker::Space.planet}", user: u)
 
-  Prompt.create!(title: "#{Faker::Verb.ing_form} #{Faker::House.furniture}")
+  Prompt.create!(title: "#{Faker::Verb.ing_form} #{Faker::House.furniture}", user: u)
 
-  Prompt.create!(title: "#{Faker::Creature::Animal.name} #{Faker::Creature::Animal.name} ")
+  Prompt.create!(title: "#{Faker::Creature::Animal.name} #{Faker::Creature::Animal.name}", user: u)
 end
 
-Drawing.create!(file: "IMG_8201.JPG", user_id: u.id, prompt_id: Prompt.all.sample.id, game: g)
-Drawing.create!(file: "IMG_8203.JPG", user_id: u.id, prompt_id: Prompt.all.sample.id, game: g)
+Drawing.create!(file: "IMG_8201.JPG", user_id: u.id, game: g)
+Drawing.create!(file: "IMG_8203.JPG", user_id: u.id, game: g)
+
+DrawingPrompt.create(drawing: Drawing.last, prompt: Prompt.last, is_correct: false)
+DrawingPrompt.create(drawing: Drawing.first, prompt: Prompt.first, is_correct: false)
