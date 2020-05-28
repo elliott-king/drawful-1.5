@@ -24,11 +24,13 @@ function gameModeSelect() {
   container.className = "h-select";
 
   const spDiv = createDiv("div-1", "div");
-  spDiv.appendChild(createBtnElement("sp", "Play Alone"));
+  spDiv.appendChild(createBtnElement("sp", "Play Alone", "large-button"));
   container.appendChild(spDiv);
 
   const mpDiv = createDiv("div-2", "div");
-  mpDiv.appendChild(createBtnElement("mp", "Play With Friends"));
+  mpDiv.appendChild(
+    createBtnElement("mp", "Play With Friends", "large-button")
+  );
   container.appendChild(mpDiv);
 
   // const usernameDiv = createDiv("div-2", "div");
@@ -55,8 +57,12 @@ function gameModeSelect() {
   });
 }
 
-function createBtnElement(action, text) {
+function createBtnElement(action, text, id) {
   const btn = document.createElement("button");
+
+  if (id) {
+    btn.id = id;
+  }
 
   if (action) {
     btn.dataset.action = action;

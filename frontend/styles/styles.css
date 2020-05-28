@@ -88,6 +88,15 @@ canvas {
 #logo {
   grid-area: logo;
   place-self: center;
+  text-align: center; 
+}
+
+#logo > img {
+  /* height: 300px; */
+  /* width: auto; */
+  height: auto;
+  width: 100%;
+  max-width: 200px;
 }
 
 #game-content {
@@ -135,4 +144,10 @@ canvas {
 #score {
   grid-area: prompts;
   place-self: center;
+}
+
+#large-button {
+  background-color: white;
+  color: black;
+  border: 2px solid #4CAF50; /* Green */
 }
