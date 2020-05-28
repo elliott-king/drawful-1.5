@@ -111,9 +111,16 @@ function joinGame(gameCode) {
       },
     }),
   })
-    .then((res) => res.json())
+    .then((res) => {
+      if (res.status === 200) return res.json()
+      return {error: `No game was found with code: ${gameCode}`}
+    })
     .then((json) => {
-      renderLobby(json);
+      if (!json.error) renderLobby(json);
+      else {
+        alert(`No lobby found with code: ${gameCode}`)
+        gameModeSelect()
+      }
     });
 }
 
