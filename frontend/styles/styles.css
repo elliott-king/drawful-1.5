@@ -75,6 +75,8 @@ canvas {
   left: 0;
   top: 0;
 
+  overflow: scroll;
+
   display: grid;
   grid-template-columns: 10% 20% auto 20% 10%;
   grid-template-rows: auto;
@@ -82,7 +84,7 @@ canvas {
    ". . content . ." 
    ". player1 logo player2 ."
    ". player3 logo player4 ."
-   ". player4 . player6 ."
+   ". player5 . player6 ."
 }
 
 #logo {
@@ -132,12 +134,12 @@ canvas {
 }
 
 #player-5 {
-  grid-area: player4;
+  grid-area: player5;
   place-self: center;
 }
 
 #player-6 {
-  grid-area: player4;
+  grid-area: player6;
   place-self: center;
 }
 
