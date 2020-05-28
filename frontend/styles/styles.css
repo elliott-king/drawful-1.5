@@ -146,8 +146,8 @@ canvas {
   place-self: center;
 }
 
-#large-button {
-  background-color: white;
-  color: black;
-  border: 2px solid #4CAF50; /* Green */
-}
+/* #large-button { */
+/*   background-color: white; */
+/*   color: black; */
+/*   border: 2px solid #4CAF50; /1* Green *1/ */
+/* } */
