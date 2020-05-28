@@ -12,9 +12,12 @@
 
 ActiveRecord::Schema.define(version: 2020_05_28_123204) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "drawing_prompts", force: :cascade do |t|
-    t.integer "prompt_id"
-    t.integer "drawing_id"
+    t.bigint "prompt_id"
+    t.bigint "drawing_id"
     t.boolean "is_correct"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -24,7 +27,7 @@ ActiveRecord::Schema.define(version: 2020_05_28_123204) do
 
   create_table "drawings", force: :cascade do |t|
     t.string "file"
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "game_id"
@@ -39,7 +42,7 @@ ActiveRecord::Schema.define(version: 2020_05_28_123204) do
   end
 
   create_table "guesses", force: :cascade do |t|
-    t.integer "drawing_id", null: false
+    t.bigint "drawing_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
