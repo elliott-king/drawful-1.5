@@ -13,7 +13,7 @@ class DrawingsController < ApplicationController
     puts params[:prompt]
     puts id
     # https://stackoverflow.com/questions/21707595
-    File.open("#{Rails.root}/../frontend/assets/#{id}.png", 'wb') do |file|
+    File.open("#{Rails.root}/public/images/#{id}.png", 'wb') do |file|
       file.write(params[:image].read)
     end
     # TODO: maybe check that the file write succeeded?
