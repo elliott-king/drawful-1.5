@@ -1,5 +1,10 @@
 async function findOrCreateCookie() {
-  if (!document.cookie || getUserId() == "null" || getUserId() === "" || getUserId() === "undefined") {
+  if (
+    !document.cookie ||
+    getUserId() == "null" ||
+    getUserId() === "" ||
+    getUserId() === "undefined"
+  ) {
     const user = await postUser();
     console.dir(user);
 
@@ -20,21 +25,21 @@ async function findOrCreateCookie() {
 }
 
 async function setUsername(username) {
-  const userId = getUserId()
+  const userId = getUserId();
   const response = await fetch(`${usersUrl}${userId}`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      "Content-Type": "application/json",
+      Accept: "application/json",
     },
     body: JSON.stringify({
-      username: username
-    })
-  })
+      username: username,
+    }),
+  });
 
-  json = await response.json()
-  localStorage.setItem('username', json.username)
-  return json.username
+  json = await response.json();
+  localStorage.setItem("username", json.username);
+  return json.username;
 }
 
 function getUserId() {
@@ -47,33 +52,34 @@ function getUserId() {
 }
 
 function getUsername() {
-  const storedName = localStorage.getItem('username')
-  if (storedName) return storedName
-  else return getUserId()
+  const storedName = localStorage.getItem("username");
+  if (storedName) return storedName;
+  else return getUserId();
 }
 
 function userNameFromUser(user) {
-  if (!user.username) return user.id 
-  return user.username
+  if (!user.username) return user.id;
+  return user.username;
 }
 
 function createUsernameForm(parentDiv) {
-  const form = document.createElement('form')
+  const form = document.createElement("form");
   form.innerHTML = `
   <input type="text" name="username" placeholder="Enter a user name">
   <input type="submit">
-  `
-  form.addEventListener('submit', (event) => {
-    event.preventDefault()
-    setUsername(event.target.username.value)
-      .then(json => {
-        parentDiv.innerHTML = json
-      })
-  })
-  return form
+  `;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    setUsername(event.target.username.value).then((json) => {
+      parentDiv.innerHTML = json;
+      gameModeSelect();
+    });
+  });
+  return form;
 }
 
 async function clearUser() {
-  document.cookie = `user_id=`
-  localStorage.clear()
+  document.cookie = `user_id=`;
+  localStorage.clear();
 }
+

@@ -297,11 +297,11 @@ function endGame() {
   const leftDiv = document.getElementById("game-content");
   const rightDiv = document.getElementById("score");
 
-  leftDiv.innerHTML = "Game is over!";
-  clearDiv(rightDiv);
-  rightDiv.appendChild(createBtnElement("start-over", "Start Over"));
+  leftDiv.innerHTML = "Game is over! ";
+  // clearDiv(rightDiv);
+  leftDiv.appendChild(createBtnElement("start-over", "Start Over"));
 
-  rightDiv.addEventListener("click", (e) => {
+  leftDiv.addEventListener("click", (e) => {
     if (e.target.dataset.action === "start-over") {
       gameModeSelect();
     }

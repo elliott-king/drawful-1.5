@@ -97,7 +97,7 @@ function renderImage(image, parent) {
 
   const imageDiv = document.createElement("div");
   const imageOwner = document.createElement("h3");
-  imageOwner.innerHTML = `Drawn by: ${image.user.id}`;
+  imageOwner.innerHTML = `Drawn by: ${userNameFromUser(image.user)}`;
 
   const imageElement = document.createElement("img");
   imageElement.src = "assets/" + image.file;
@@ -111,7 +111,7 @@ function renderImage(image, parent) {
 function createScoreElem(username, score) {
   const scoreElement = document.createElement("h3");
   scoreElement.innerHTML = `
-    <h3>${username} score: <span id="score">${score}</span></h1>
+    <h3>${username}'s score: <span id="score">${score}</span></h3>
   `;
 
   return scoreElement;
