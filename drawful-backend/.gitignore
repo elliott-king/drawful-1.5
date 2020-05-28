@@ -19,4 +19,6 @@ jspm_packages
 /log/*
 !/log/.keep
 /tmp
+
 .byebug_history
+public/images
