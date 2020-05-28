@@ -2,11 +2,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // const canvasDiv = document.querySelector("#game-content");
 
   findOrCreateCookie();
-  gameModeSelect();
+  setUsernameOrPlay();
 });
 
-const url = "http://localhost:3000/"
-const drawingsUrl = `${url}drawings/`
-const promptsUrl = `${url}prompts/`
-const gamesUrl = `${url}games/`
-const usersUrl = `${url}users/`
+const url = "http://localhost:3000/";
+const drawingsUrl = `${url}drawings/`;
+const promptsUrl = `${url}prompts/`;
+const gamesUrl = `${url}games/`;
+const usersUrl = `${url}users/`;
+

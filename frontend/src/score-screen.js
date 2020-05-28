@@ -14,7 +14,9 @@ async function showScoreScreen(drawings, game_id, drawing) {
   game.users.forEach((user) => {
     const id = user.id;
     console.dir(scores.scores[id]);
-    scoreDiv.appendChild(createScoreElem(user.id, scores.scores[user.id]));
+    scoreDiv.appendChild(
+      createScoreElem(userNameFromUser(user), scores.scores[user.id])
+    );
   });
 
   mainContainer.appendChild(scoreDiv);
@@ -24,7 +26,7 @@ async function showScoreScreen(drawings, game_id, drawing) {
   setTimeout(() => {
     // clear page
     checkTurn(drawings, game_id);
-  }, 2000);
+  }, 5000);
 }
 
 function appendUserScore(div, score, username) {
