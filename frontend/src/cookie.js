@@ -51,6 +51,12 @@ function getUserId() {
   return userId;
 }
 
+function usernameExists() {
+  if (localStorage.getItem("username")) {
+    return true;
+  }
+}
+
 function getUsername() {
   const storedName = localStorage.getItem("username");
   if (storedName) return storedName;

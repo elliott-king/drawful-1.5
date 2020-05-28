@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // const canvasDiv = document.querySelector("#game-content");
 
   findOrCreateCookie();
-  showUsernameForm();
+  setUsernameOrPlay();
 });
 
 const url = "http://localhost:3000/";

@@ -1,3 +1,11 @@
+function setUsernameOrPlay() {
+  if (usernameExists()) {
+    gameModeSelect();
+  } else {
+    showUsernameForm();
+  }
+}
+
 function showUsernameForm() {
   const container = document.getElementById("container");
   const gameDiv = createDiv("game-content", "game");
