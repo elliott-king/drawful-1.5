@@ -6,10 +6,16 @@ function handleDrawingPrompt(drawings, game_id) {
   let drawing = drawings[0];
   let gameContent = document.getElementById("game-content");
   if (checkUserMatchesDrawing(drawing)) {
-    renderUserStall(gameContent, "This is your drawing!");
+    removeScores();
+    setGrid("sp-draw");
+    // clearDiv(gameContent);
+    gameContent.innerHTML = "";
+    renderUserStall(gameContent, "Players are viewing your Drawing!");
     hasAllPromptsPollCycle(drawing, game_id, drawings);
   } else {
     // TODO: time out user after 30 seconds
+    removeScores();
+    setGrid("sp-draw");
     const promptForm = createPromptForm(drawing, gameContent);
     promptForm.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -20,6 +26,11 @@ function handleDrawingPrompt(drawings, game_id) {
       });
     });
   }
+}
+
+function setGrid(grid) {
+  const container = document.getElementById("container");
+  container.className = grid;
 }
 
 function clearPage() {
@@ -38,6 +49,22 @@ function removePrompts() {
 
   if (prompDiv) {
     prompDiv.remove();
+  }
+}
+
+function removeGame() {
+  const gameDiv = document.getElementById("game-content");
+
+  if (gameDiv) {
+    gameDiv.remove();
+  }
+}
+
+function removeScores() {
+  const scoreDiv = document.getElementById("score");
+
+  if (scoreDiv) {
+    scoreDiv.remove();
   }
 }
 

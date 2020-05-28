@@ -4,10 +4,12 @@ img {
 }
 
 body {
-  background-color: grey;
+  background-color: white;
 }
 
 canvas {
+	border-radius: 10px 10px 10px 10px;
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
   background-color: white;
   width: 300px;
   height: 300px;
@@ -122,5 +124,10 @@ canvas {
 
 #div-2 {
   grid-area: elem2;
+  place-self: center;
+}
+
+#score {
+  grid-area: prompts;
   place-self: center;
 }

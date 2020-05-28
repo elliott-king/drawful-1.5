@@ -1,6 +1,8 @@
 function gameModeSelect() {
-  const gameDiv = createDiv("game-content");
+  removeGame();
+  removeScores();
   const container = document.getElementById("container");
+  const gameDiv = createDiv("game-content");
   container.className = "h-select";
 
   const spDiv = createDiv("div-1", "div");

@@ -30,7 +30,7 @@ class DrawingsController < ApplicationController
     user = User.find(params[:user_id])
     drawings = user.game.drawings
 
-    render json: drawings
+    render json: drawings, include: [:user]
   end  
 
   def prompts
