@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   resources :games
-  resources :prompts
   resources :users
   
   get '/games/user_count/:id', to: 'games#user_count'
@@ -12,6 +11,8 @@ Rails.application.routes.draw do
   get '/users/all_scores/:user_id', to: 'users#all_scores'
 
   get '/drawings/game_drawings/:user_id', to: 'drawings#game_drawings'
+  get '/prompts/random_prompt/', to: 'prompts#random_prompt'
+  resources :prompts
 
   resources :drawings do
     member do

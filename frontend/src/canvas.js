@@ -56,12 +56,11 @@ function submitDrawingFunction(div, mode) {
 }
 
 function displayPrompt(div) {
-  fetch(promptsUrl)
+  fetch(`${promptsUrl}random_prompt`)
     .then((res) => res.json())
-    .then(renderPrompt);
+    .then(renderPrompt)
 
-  function renderPrompt(prompts) {
-    const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+  function renderPrompt(randomPrompt) {
     const promptElement = document.createElement("p");
     promptElement.dataset.id = randomPrompt.id;
     // console.log(promptElement.dataset.id)
