@@ -187,7 +187,7 @@ async function playerLobbyLongPoll(lobby) {
     // && player.count > 1
     removeElements(clientSidePlayers);
     startDrawing();
-  } else if (serverSidePlayers.length === 4) {
+  } else if (serverSidePlayers.length === 6) {
     removeElements(clientSidePlayers);
     startDrawing();
     // addScoreNode();
