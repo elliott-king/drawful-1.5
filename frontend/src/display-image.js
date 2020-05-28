@@ -155,7 +155,11 @@ async function appendPromptSet(
   const users = game.users;
 
   allPrompts.forEach((prompt) => {
-    if (prompt.id != correctPrompt.id && promptArray.length < users.length){
+    if (
+      prompt.id != correctPrompt.id && 
+      promptArray.length < users.length && 
+      !promptArray.includes(prompt)
+      ){
       promptArray.push(prompt)
     }
   })
@@ -170,7 +174,7 @@ async function appendPromptSet(
     promptDiv.appendChild(element)
   })
 
-  promptElementArray.forEach((element) => promptDiv.appendChild(element));
+  // promptElementArray.forEach((element) => promptDiv.appendChild(element));
 
   /* Randomize array in-place using Durstenfeld shuffle algorithm */
   // https://stackoverflow.com/questions/2450954
