@@ -12,7 +12,7 @@ function createDrawTimer(div, mode) {
   timer.setAttribute('id', 'timer')
   div.appendChild(timer)
 
-  createDrawingTimeout(() => submitDrawingFunction(div, mode), 30000)
+  createDrawingTimeout(() => submitDrawingFunction(div, mode), 35000)
 }
 
 function createDrawingTimeout(callback, ms) {
