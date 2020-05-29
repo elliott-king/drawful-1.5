@@ -26,7 +26,7 @@ class GamesController < ApplicationController
     user = User.find_by(id: add_user_params[:user_id])
     game = Game.find_by(code: add_user_params[:code])
 
-    if game.user_count < 4
+    if game.user_count < 6
       user.game = game
       user.save
 
