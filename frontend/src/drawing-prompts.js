@@ -5,7 +5,7 @@ const drawingUrl = "http://localhost:3000/drawings";
 function handleDrawingPrompt(drawings, game_id) {
   let drawing = drawings[0];
   let gameContent = document.getElementById("game-content");
-  clearDiv(gameContent)
+  clearDiv(gameContent);
   renderImage(drawing, gameContent);
   if (checkUserMatchesDrawing(drawing)) {
     removeScores();
@@ -143,7 +143,7 @@ function createPromptForm(drawing, contentDiv) {
   promptForm = document.createElement("form");
   promptForm.innerHTML = `
   <p>Give a name to this drawing</p>
-	<input type="text" name="prompt" value="Suggest a name">
+	<input type="text" name="prompt" placeholder="Suggest a name">
 	<input type="submit">
 	`;
 

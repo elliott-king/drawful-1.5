@@ -25,15 +25,15 @@ function renderMultiplayerChoices(e) {
   const div2 = document.getElementById("div-2");
   clearDiv(div2);
 
-  const newBtn = createBtnElement("newGame", "New game");
+  const newBtn = createBtnElement("newGame", "New game", "large-button");
 
   // newBtn.addEventListener('click', (e) => console.log('new game clicked'))
   newBtn.addEventListener("click", newMultiplayerGame);
 
   const joinGameForm = document.createElement("form");
   const html = `
-  <label>Code</label><input type="text" name="code">
-  <input type="submit">Join</input>
+    <input type="text" name="code" placeholder="Enter Game Code">
+    <input id="large-button" type="submit" value="Join">
   `;
   joinGameForm.innerHTML = html;
   joinGameForm.addEventListener("submit", (e) => {
@@ -88,7 +88,7 @@ function setAsStarted() {
 
 function addStartBtn() {
   const gameDiv = document.getElementById("game-content");
-  const btn = createBtnElement("start", "Start Game");
+  const btn = createBtnElement("start", "Start Game", "large-button");
 
   btn.addEventListener("click", () => {
     setAsStarted();
@@ -112,14 +112,14 @@ function joinGame(gameCode) {
     }),
   })
     .then((res) => {
-      if (res.status === 200) return res.json()
-      return {error: `No game was found with code: ${gameCode}`}
+      if (res.status === 200) return res.json();
+      return { error: `No game was found with code: ${gameCode}` };
     })
     .then((json) => {
       if (!json.error) renderLobby(json);
       else {
-        alert(`No lobby found with code: ${gameCode}`)
-        gameModeSelect()
+        alert(`No lobby found with code: ${gameCode}`);
+        gameModeSelect();
       }
     });
 }
@@ -135,12 +135,12 @@ function renderLobby(game) {
   container.className = "mp-lobby";
 
   const contentDiv = document.getElementById("game-content");
-  contentDiv.innerHTML = game.code;
+  contentDiv.innerHTML = `<h2>Room Code: <span class="purple">${game.code}</span></h2>`;
 
-  createMultiplayerHeader();
+  // createMultiplayerHeader();
   // addGameCodeNode(game.code)
 
-  console.log(game);
+  // console.log(game);
   renderPlayerDivs(game.users, container);
   playerLobbyLongPoll(container);
 }
@@ -257,7 +257,7 @@ function startDrawing() {
   const gameContent = document.getElementById("game-content");
   clearDiv(gameContent);
 
-  createDrawTimer(gameContent, 'mp')
+  createDrawTimer(gameContent, "mp");
   createCanvas(gameContent);
   addUploadButton(gameContent, "mp");
   drawingLongPoll();
