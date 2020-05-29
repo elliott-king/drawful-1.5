@@ -15,15 +15,15 @@ function displayImage() {
       .then(gameLoop);
   }
 
-  function gameLoop(image) {
+  function gameLoop(images) {
     if (imagesShown < 5) {
       // clear content in relevant divs
       clearDiv(contentDiv);
       clearDiv(promptDiv);
 
       // create image element and append that element
-      const randomImg = selectRandom(image);
-      renderImage(randomImg, contentDiv);
+      const randomImg = selectRandom(images);
+      spRenderImage(randomImg, contentDiv);
 
       // passing in the displayed image
       renderPrompts(randomImg);
@@ -36,7 +36,7 @@ function displayImage() {
 
   function displayScore() {
     promptDiv.prepend(createScoreElem(getUsername(), score));
-    promptDiv.appendChild(createStartOverBtn);
+    promptDiv.appendChild(createStartOverBtn());
   }
 
   async function fetchPrompts() {
@@ -50,9 +50,9 @@ function displayImage() {
   async function renderPrompts(image) {
     // fetchPrompts returns a promise. the await keyword forces allPrompts to wait until the promise is resolved
     let allPrompts = await fetchPrompts();
-    const correctPrompt = createPromptElement(image, image.prompt);
+    // const correctPrompt = createPromptElement(image, image.prompts[0]);
 
-    appendPromptSet(createPromptElement(correctPrompt), allPrompts, promptDiv);
+    spAppendPromptSet(image.prompts[0], allPrompts, promptDiv);
 
     container.appendChild(promptDiv);
   }
@@ -76,8 +76,7 @@ function displayImage() {
       clearDiv(contentDiv);
       promptDiv.remove();
 
-      createCanvas(contentDiv);
-      addUploadButton(contentDiv);
+      gameModeSelect();
     }
   });
 
@@ -92,9 +91,19 @@ function selectRandom(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-function renderImage(image, parent) {
+function spRenderImage(image, parent) {
   console.dir(image);
+  const imageDiv = document.createElement("div");
 
+  const imageElement = document.createElement("img");
+  imageElement.src = "assets/" + image.file;
+
+  imageDiv.appendChild(imageElement);
+
+  parent.appendChild(imageDiv);
+}
+
+function renderImage(image, parent) {
   const imageDiv = document.createElement("div");
   const imageOwner = document.createElement("h3");
   imageOwner.innerHTML = `Drawn by: ${userNameFromUser(image.user)}`;
@@ -112,7 +121,7 @@ function renderImage(image, parent) {
 function createScoreElem(username, score) {
   const scoreElement = document.createElement("h3");
   scoreElement.innerHTML = `
-    <h3>${username}'s score: <span id="score">${score}</span></h3>
+    <h3>${username}'s score: <span id="score" class="purple">${score}</span></h3>
   `;
 
   return scoreElement;
@@ -120,6 +129,7 @@ function createScoreElem(username, score) {
 
 function createStartOverBtn() {
   const startOverBtn = document.createElement("button");
+  startOverBtn.id = "large-button";
   startOverBtn.value = "start over";
   startOverBtn.innerHTML = "Start Over";
 
@@ -127,6 +137,7 @@ function createStartOverBtn() {
 }
 
 function createPromptElement(image, prompt) {
+  console.dir(prompt);
   const promptElement = document.createElement("h2");
   promptElement.dataset.correct =
     image.prompt_id === prompt.id ? "true" : "false";
@@ -143,48 +154,68 @@ async function fetchGameInfo(game_id) {
   return response.json();
 }
 
-async function appendPromptSet(
-  correctPrompt,
-  allPrompts,
-  promptDiv,
-  game_id
-) {
+function spAppendPromptSet(correctPrompt, allPrompts, promptDiv) {
+  let promptArray = [correctPrompt];
+  console.dir(correctPrompt);
+  console.dir(allPrompts);
 
-  let promptArray = [correctPrompt]
+  allPrompts.forEach((prompt) => {
+    if (
+      prompt.id != correctPrompt.id &&
+      !promptArray.includes(prompt) &&
+      promptArray.length < 4
+    ) {
+      promptArray.push(prompt);
+    }
+  });
+
+  shuffleArray(promptArray);
+  promptArray.forEach((prompt) => {
+    let element = null;
+    if (prompt.id == correctPrompt.id) {
+      element = createPromptElement({ prompt_id: prompt.id }, prompt);
+    } else {
+      element = createPromptElement({ prompt_id: -1 }, prompt);
+    }
+    promptDiv.appendChild(element);
+  });
+}
+
+async function appendPromptSet(correctPrompt, allPrompts, promptDiv, game_id) {
+  let promptArray = [correctPrompt];
   const game = await fetchGameInfo(game_id);
   const users = game.users;
 
   allPrompts.forEach((prompt) => {
     if (
-      prompt.id != correctPrompt.id && 
-      promptArray.length < users.length && 
+      prompt.id != correctPrompt.id &&
+      promptArray.length < users.length &&
       !promptArray.includes(prompt)
-      ){
-      promptArray.push(prompt)
+    ) {
+      promptArray.push(prompt);
     }
-  })
-  shuffleArray(promptArray)
+  });
+  shuffleArray(promptArray);
   promptArray.forEach((prompt) => {
-    let element = null
+    let element = null;
     if (prompt.id == correctPrompt.id) {
-      element = createPromptElement({prompt_id: prompt.id}, prompt)
+      element = createPromptElement({ prompt_id: prompt.id }, prompt);
     } else {
-      element = createPromptElement({ prompt_id: -1}, prompt)
+      element = createPromptElement({ prompt_id: -1 }, prompt);
     }
-    promptDiv.appendChild(element)
-  })
-
+    promptDiv.appendChild(element);
+  });
   // promptElementArray.forEach((element) => promptDiv.appendChild(element));
+}
 
-  /* Randomize array in-place using Durstenfeld shuffle algorithm */
-  // https://stackoverflow.com/questions/2450954
-  function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
+/* Randomize array in-place using Durstenfeld shuffle algorithm */
+// https://stackoverflow.com/questions/2450954
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
   }
 }
 

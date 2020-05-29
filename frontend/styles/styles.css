@@ -4,6 +4,8 @@ img {
 }
 
 body {
+  /* font-family: 'Indie Flower', cursive; */
+  font-family: 'Chelsea Market', cursive;
   background-color: #F6F6F3;
   background-size: 100px 100px;
   /* background-image: radial-gradient(circle, #000000 1px, rgba(0, 0, 0, 0) 1px); */
@@ -27,6 +29,8 @@ canvas {
   left: 0;
   top: 0;
 
+  overflow: scroll;
+
   display: grid;
   grid-template-columns: 20% auto auto 20%;
   grid-template-rows: auto;
@@ -42,6 +46,8 @@ canvas {
   position: fixed;
   left: 0;
   top: 0;
+
+  overflow: scroll;
 
   display: grid;
   grid-template-columns: 30% auto 30%;
@@ -59,6 +65,8 @@ canvas {
   left: 0;
   top: 0;
 
+  overflow: scroll;
+
   display: grid;
   grid-template-columns: 20% auto auto 20%;
   grid-template-rows: auto;
@@ -75,16 +83,17 @@ canvas {
   left: 0;
   top: 0;
 
-  overflow: scroll;
+  /* overflow: scroll; */
 
   display: grid;
-  grid-template-columns: 10% 20% auto 20% 10%;
+  grid-template-columns: 10% 10% 10% auto 10% 10% 10%;
   grid-template-rows: auto;
   grid-template-areas: 
-   ". . content . ." 
-   ". player1 logo player2 ."
-   ". player3 logo player4 ."
-   ". player5 . player6 ."
+   ". . . content . . ." 
+   ". . player1 logo player2 . ."
+   ". player5 . logo . player6 ."
+   ". . player3  logo player4 . ."
+   ". . . . . . ."
 }
 
 #logo {
@@ -98,7 +107,7 @@ canvas {
   /* width: auto; */
   height: auto;
   width: 100%;
-  max-width: 200px;
+  max-width: 150px;
 }
 
 #game-content {
@@ -158,8 +167,18 @@ canvas {
   place-self: center;
 }
 
-/* #large-button { */
-/*   background-color: white; */
-/*   color: black; */
-/*   border: 2px solid #4CAF50; /1* Green *1/ */
-/* } */
+.purple {
+  color: #CF158B;
+}
+
+#large-button {
+  background-color: white;
+  color: black;
+  border: 2px solid #CF158B; /* Purple */
+  border-radius: 9px;
+  text-shadow:0px 1px 0px #5a2866;
+  font-size: 17px;
+	padding: 8px 16px;
+}
+
+

@@ -6,10 +6,10 @@ async function findOrCreateCookie() {
     getUserId() === "undefined"
   ) {
     const user = await postUser();
-    console.dir(user);
+    // console.dir(user);
 
     document.cookie = `user_id=${user.id}`;
-    console.dir(document.cookie);
+    // console.dir(document.cookie);
   }
 
   async function postUser() {
@@ -38,7 +38,7 @@ async function setUsername(username) {
   });
 
   json = await response.json();
-  localStorage.setItem("username", json.username);
+  sessionStorage.setItem("username", json.username);
   return json.username;
 }
 
@@ -52,7 +52,7 @@ function getUserId() {
 }
 
 function usernameExists() {
-  if (localStorage.getItem("username")) {
+  if (sessionStorage.getItem("username")) {
     return true;
   }
 }
@@ -72,7 +72,7 @@ function createUsernameForm(parentDiv) {
   const form = document.createElement("form");
   form.innerHTML = `
   <input type="text" name="username" placeholder="Enter a user name">
-  <input type="submit">
+  <input id="large-button" type="submit">
   `;
   form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -87,5 +87,6 @@ function createUsernameForm(parentDiv) {
 async function clearUser() {
   document.cookie = `user_id=`;
   localStorage.clear();
+  sessionStorage.clear();
 }
 
