@@ -19,7 +19,7 @@ function showUsernameForm() {
 function gameModeSelect() {
   removeGame();
   removeScores();
-  let container = document.getElementById("container");
+  const container = document.getElementById("container");
   const gameDiv = createDiv("game-content");
   container.className = "h-select";
 
