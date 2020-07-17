@@ -50,7 +50,6 @@ function displayImage() {
   async function renderPrompts(image) {
     // fetchPrompts returns a promise. the await keyword forces allPrompts to wait until the promise is resolved
     let allPrompts = await fetchPrompts();
-    // const correctPrompt = createPromptElement(image, image.prompts[0]);
 
     spAppendPromptSet(image.prompts[0], allPrompts, promptDiv);
 
@@ -92,7 +91,6 @@ function selectRandom(array) {
 }
 
 function spRenderImage(image, parent) {
-  console.dir(image);
   const imageDiv = document.createElement("div");
 
   const imageElement = document.createElement("img");
@@ -137,7 +135,6 @@ function createStartOverBtn() {
 }
 
 function createPromptElement(image, prompt) {
-  console.dir(prompt);
   const promptElement = document.createElement("h2");
   promptElement.dataset.correct =
     image.prompt_id === prompt.id ? "true" : "false";
@@ -156,8 +153,6 @@ async function fetchGameInfo(game_id) {
 
 function spAppendPromptSet(correctPrompt, allPrompts, promptDiv) {
   let promptArray = [correctPrompt];
-  console.dir(correctPrompt);
-  console.dir(allPrompts);
 
   allPrompts.forEach((prompt) => {
     if (
