@@ -19,7 +19,7 @@ function showUsernameForm() {
 function gameModeSelect() {
   removeGame();
   removeScores();
-  const container = document.getElementById("container");
+  let container = document.getElementById("container");
   const gameDiv = createDiv("game-content");
   container.className = "h-select";
 
@@ -33,11 +33,7 @@ function gameModeSelect() {
   );
   container.appendChild(mpDiv);
 
-  // const usernameDiv = createDiv("div-2", "div");
-  // usernameDiv.appendChild(createUsernameForm(usernameDiv));
-
-  container.addEventListener("click", (e) => {
-    // console.dir(e.target.dataset.action);
+  const gameModeSelector = (e) => {
     if (e.target.dataset.action === "sp") {
       container.appendChild(gameDiv);
 
@@ -46,15 +42,13 @@ function gameModeSelect() {
 
       createCanvas(gameDiv);
       addUploadButton(gameDiv, "sp");
+      container.removeEventListener("click", gameModeSelector);
     } else if (e.target.dataset.action === "mp") {
-      // container.appendChild(createDiv("game-content"));
-
-      // spDiv.remove();
-      // mpDiv.remove();
-
       renderMultiplayerChoices();
+      container.removeEventListener("click", gameModeSelector);
     }
-  });
+  };
+  container.addEventListener("click", gameModeSelector);
 }
 
 function createBtnElement(action, text, id) {

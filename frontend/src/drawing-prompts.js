@@ -56,6 +56,7 @@ function removeGame() {
   const gameDiv = document.getElementById("game-content");
 
   if (gameDiv) {
+    console.log("removing game div in conditional block");
     gameDiv.remove();
   }
 }
