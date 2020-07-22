@@ -29,8 +29,6 @@ You can download with `git clone` and set up with
 2. `rails db:setup`
 3. `rails db:schema:load`
 4. `rails db:migrate` 
-   
-Single player will not work until you have played at least one multiplayer game.
 
 ### Technical Notes
 
