@@ -22,3 +22,5 @@ jspm_packages
 
 .byebug_history
 public/images
+
+.env
