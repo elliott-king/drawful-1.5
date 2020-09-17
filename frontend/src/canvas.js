@@ -12,7 +12,7 @@ function createDrawTimer(div, mode) {
   timer.setAttribute('id', 'timer')
   div.appendChild(timer)
 
-  createDrawingTimeout(() => submitDrawingFunction(div, mode), 30000)
+  createDrawingTimeout(() => submitDrawingFunction(div, mode), 35000)
 }
 
 function createDrawingTimeout(callback, ms) {
@@ -44,45 +44,25 @@ function submitDrawingFunction(div, mode) {
   const dataUrl = canvas.toDataURL("image/png;base64;");
 
   // https://stackoverflow.com/questions/21707595
-  const file = dataURLtoBlob(dataUrl);
-  let fd = new FormData();
-  fd.append("image", file);
-  fd.append("prompt", prompt.dataset.id);
-  fd.append("user", getUserId());
-  // console.dir(`fd form promp id = ${prompt.dataset.id}`)
-
   // Convert dataURL to Blob object
   function dataURLtoBlob(dataURL) {
     // Decode the dataURL
     var binary = atob(dataURL.split(",")[1]);
-
     // Create 8-bit unsigned array
     var array = [];
     for (var i = 0; i < binary.length; i++) {
       array.push(binary.charCodeAt(i));
     }
-
     // Return our Blob object
     return new Blob([new Uint8Array(array)], { type: "image/png" });
   }
+  const file = dataURLtoBlob(dataUrl);
 
-  // And send it
-  fetch(drawingsUrl, {
-    method: "POST",
-    // Should be good by just dropping it in the body
-    // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-    body: fd,
-  }).then((res) => {
-    // console.log('image upload response', res)
-    // return res.json()
-    // remove canvas elements and render image
-    if (mode === "sp") {
-      displayImage();
-    } else if (mode === "mp") {
-      // render wait screen
-      renderWaitScreen(div);
-    }
-  });
+  createDrawing({user_id: getUserId(), prompt_id: prompt.dataset.id, file: file})
+    .then((res) => {
+      if (mode === "sp") displayImage();
+      else if (mode === "mp") renderWaitScreen(div)
+    })
 }
 
 function displayPrompt(div) {

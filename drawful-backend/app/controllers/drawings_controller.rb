@@ -3,34 +3,30 @@ require 'securerandom'
 class DrawingsController < ApplicationController
   def index
     drawings = Drawing.all
-    render json: drawings, include: [:prompts]
+    render json: drawings, include: [:prompts], methods: :image_url
   end
 
   # expects json format {user: user_id, prompt: prompt_id}
   def create
     id = SecureRandom.uuid
-    puts params[:user]
-    puts params[:prompt]
-    puts id
-    # https://stackoverflow.com/questions/21707595
-    File.open("#{Rails.root}/../frontend/assets/#{id}.png", 'wb') do |file|
-      file.write(params[:image].read)
-    end
-    # TODO: maybe check that the file write succeeded?
     u = User.find(params[:user])
     d = Drawing.new
     d.user_id = params[:user]
     d.game = u.game
     dp = DrawingPrompt.create!(prompt_id: params[:prompt], drawing: d, is_correct: true) 
-    d.file = "#{id}.png"
+
+    # attach the actual image
+    image = params[:image]
+    d.image.attach(image) if image.present? && !!d
     d.save!
+    render json: d.as_json(root: false, methods: :image_url).except('updated_at')
   end
 
   def game_drawings
     user = User.find(params[:user_id])
     drawings = user.game.drawings
 
-    render json: drawings, include: [:user]
+    render json: drawings, include: [:user], methods: :image_url
   end  
 
   def prompts

@@ -23,5 +23,9 @@ Rails.application.routes.draw do
       post 'add_guess'
     end
   end
+
+  # Handles presigned urls for AWS
+  post '/presigned_url', to: 'direct_upload#create'
+  
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

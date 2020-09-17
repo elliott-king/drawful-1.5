@@ -1,5 +1,7 @@
 class Drawing < ApplicationRecord
   # TODO: get rid of prompt_id schema
+  has_one_attached :image
+  
   belongs_to :user
   belongs_to :game, optional: true
 
@@ -15,5 +17,11 @@ class Drawing < ApplicationRecord
       end
     end
     return nil
+  end
+
+  def image_url
+    if image.attached?
+      image.blob.service_url
+    end
   end
 end
