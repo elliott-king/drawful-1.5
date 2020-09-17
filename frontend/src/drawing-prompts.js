@@ -1,6 +1,3 @@
-const promptUrl = "http://localhost:3000/prompts";
-const gameUrl = "http://localhost:3000/games";
-const drawingUrl = "http://localhost:3000/drawings";
 
 function handleDrawingPrompt(drawings, game_id) {
   let drawing = drawings[0];
