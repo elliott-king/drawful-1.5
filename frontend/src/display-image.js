@@ -10,6 +10,7 @@ function displayImage() {
   let imagesShown = 0;
 
   function fetchImage() {
+    // fetches all images
     fetch(drawingsUrl)
       .then((res) => res.json())
       .then(gameLoop);
@@ -96,7 +97,7 @@ function spRenderImage(image, parent) {
   const imageDiv = document.createElement("div");
 
   const imageElement = document.createElement("img");
-  imageElement.src = "assets/" + image.file;
+  imageElement.src = image.image_url;
 
   imageDiv.appendChild(imageElement);
 
