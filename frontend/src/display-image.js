@@ -110,8 +110,7 @@ function renderImage(image, parent) {
   imageOwner.innerHTML = `Drawn by: ${userNameFromUser(image.user)}`;
 
   const imageElement = document.createElement("img");
-  imageElement.src = `${url}images/` + image.file;
-  // imageElement.src = "assets/" + image.file;
+  imageElement.src = image.image_url;
 
   imageDiv.appendChild(imageOwner);
   imageDiv.appendChild(imageElement);
