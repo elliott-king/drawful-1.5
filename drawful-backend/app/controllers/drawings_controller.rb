@@ -3,7 +3,7 @@ require 'securerandom'
 class DrawingsController < ApplicationController
   def index
     drawings = Drawing.all
-    render json: drawings, include: [:prompts]
+    render json: drawings, include: [:prompts], methods: :image_url
   end
 
   # expects json format {user: user_id, prompt: prompt_id}
