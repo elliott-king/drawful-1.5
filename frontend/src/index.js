@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   setUsernameOrPlay();
 });
 
-const url = "http://localhost:3000/" // DONOTSUBMIT
+const url = "https://drawful-1-5.herokuapp.com/"
 const drawingsUrl = `${url}drawings/`
 const promptsUrl = `${url}prompts/`
 const gamesUrl = `${url}games/`
