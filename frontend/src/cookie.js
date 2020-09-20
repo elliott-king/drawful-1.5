@@ -38,6 +38,7 @@ async function setUsername(username) {
   });
 
   json = await response.json();
+  console.log(json);
   sessionStorage.setItem("username", json.username);
   return json.username;
 }
@@ -58,7 +59,7 @@ function usernameExists() {
 }
 
 function getUsername() {
-  const storedName = localStorage.getItem("username");
+  const storedName = sessionStorage.getItem("username");
   if (storedName) return storedName;
   else return getUserId();
 }
