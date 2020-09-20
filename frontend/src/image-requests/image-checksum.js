@@ -1,8 +1,3 @@
-// console.log(CryptoJS)
-// console.log('md5', CryptoJS.MD5("hello"))
-// console.log('base64', CryptoJS.enc.Base64)
-// console.log('wordarray', CryptoJS.lib.WordArray)
-
 // Note that for larger files, you may want to hash them incrementally.
 // Taken from https://stackoverflow.com/questions/768268/
 const md5FromFile = (file) => {
