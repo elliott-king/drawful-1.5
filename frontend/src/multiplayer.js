@@ -27,7 +27,6 @@ function renderMultiplayerChoices(e) {
 
   const newBtn = createBtnElement("newGame", "New game", "large-button");
 
-  // newBtn.addEventListener('click', (e) => console.log('new game clicked'))
   newBtn.addEventListener("click", newMultiplayerGame);
 
   const joinGameForm = document.createElement("form");
@@ -46,11 +45,7 @@ function renderMultiplayerChoices(e) {
 
     joinGame(e.target.code.value);
   });
-  // joinGameForm.addEventListener('submit', joinGame)
 
-  // const contentDiv = document.getElementById("game-content");
-  // contentDiv.append(newBtn);
-  // contentDiv.append(joinGameForm);
   div1.appendChild(newBtn);
   div2.appendChild(joinGameForm);
 }
@@ -61,7 +56,6 @@ function newMultiplayerGame(e) {
   const divs = document.querySelectorAll(`[data-action="div"]`);
   removeElements(divs);
 
-  console.log("User id", getUserId(), "creating new game...");
   fetch(gamesUrl, {
     method: "POST",
     headers: {
@@ -73,7 +67,6 @@ function newMultiplayerGame(e) {
     }),
   })
     .then((res) => {
-      // console.log(res);
       return res.json();
     })
     .then((json) => {
@@ -190,7 +183,6 @@ async function playerLobbyLongPoll(lobby) {
   } else if (serverSidePlayers.length === 6) {
     removeElements(clientSidePlayers);
     startDrawing();
-    // addScoreNode();
   } else if (clientSidePlayers.length < serverSidePlayers.length) {
     const newUsers = serverSidePlayers.filter(
       (player) => !playerIds.includes(player.id.toString())
@@ -277,8 +269,6 @@ async function drawingLongPoll() {
 
   if (players.length === drawings.length) {
     // continue to guessing phase
-    // console.dir(drawings);
-    // removeGameCodeNode();
     checkTurn(drawings, user.game_id);
   } else {
     setTimeout(() => {
@@ -293,7 +283,6 @@ function checkTurn(drawings, gameId) {
   // We need every user to see the same drawing
   drawings.sort((a, b) => a.id > b.id);
   if (drawings.length == 0) {
-    console.log("game is over");
     endGame();
     // return;
   } else {
@@ -306,7 +295,6 @@ function endGame() {
   const rightDiv = document.getElementById("score");
 
   leftDiv.innerHTML = "Game is over! ";
-  // clearDiv(rightDiv);
   leftDiv.appendChild(createBtnElement("start-over", "Start Over"));
 
   leftDiv.addEventListener("click", (e) => {

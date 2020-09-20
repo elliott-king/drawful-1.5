@@ -19,9 +19,9 @@ function handlePromptGuesses(drawings, game_id) {
         renderUserStall(containerDiv, "People are guessing on your drawing");
         hasAllGuessesPollCycle(drawing, game_id, drawings);
       } else {
-        const instruction = document.createElement('p')
-        instruction.innerText = "Guess the real name!"
-        containerDiv.appendChild(instruction)
+        const instruction = document.createElement("p");
+        instruction.innerText = "Guess the real name!";
+        containerDiv.appendChild(instruction);
         addGuessHandler(promptDiv, function (promptId, isCorrect) {
           submitGuess(drawing, promptId, isCorrect).then(() => {
             clearDiv(containerDiv);
@@ -30,8 +30,8 @@ function handlePromptGuesses(drawings, game_id) {
           });
         });
       }
-    })
-  })
+    });
+  });
 }
 
 // Overly simple: just adds empty Guess object (to increase count of guesses)
@@ -75,11 +75,9 @@ function promptsHaveAllGuesses(drawing, game_id) {
     .then((res) => res.json())
     .then((json) => {
       const guessCount = json.count;
-      console.log("guess count json", json);
       return fetch(`${gamesUrl}user_count/${game_id}`)
         .then((res) => res.json())
         .then((json) => {
-          console.log("user count json", json);
           const userCount = json.count;
           // User who created the picture will not guess
           return parseInt(userCount) <= guessCount + 1;
@@ -92,7 +90,6 @@ function getPrompts(drawing) {
   return fetch(`${drawingsUrl}${drawing.id}/prompts`)
     .then((res) => res.json())
     .then((json) => {
-      console.log(json);
       return json.prompts;
     });
 }
@@ -116,10 +113,10 @@ function displayPrompts(prompts, correctPromptId, containerDiv, game_id) {
   promptDiv.id = "prompts";
   containerDiv.appendChild(promptDiv);
 
-  let correct_prompt = null
+  let correct_prompt = null;
   prompts.forEach((prompt) => {
     if (prompt.id == image.prompt_id) {
-      correct_prompt = prompt
+      correct_prompt = prompt;
     }
   });
   appendPromptSet(correct_prompt, prompts, promptDiv, game_id);
@@ -135,13 +132,11 @@ function addGuessHandler(promptDiv, onGuessCallback) {
       if (e.target.dataset.correct === "true") {
         // incrementScore()
         changeElementColor(e.target, "green");
-        console.log("You guessed right!");
         isCorrect = true;
       } else {
         const correctAns = promptDiv.querySelector(`[data-correct="true"]`);
         changeElementColor(correctAns, "green");
         changeElementColor(e.target, "red");
-        console.log("You guessed wrong, sucker");
       }
     }
     const promptId = e.target.dataset.id;

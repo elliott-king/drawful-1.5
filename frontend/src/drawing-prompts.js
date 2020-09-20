@@ -124,15 +124,12 @@ function uploadPrompt(drawing, prompt) {
     }),
   })
     .then((res) => {
-      console.log("prompt response,", res);
       if (res.status !== 200) {
         console.error("Creation of new prompt failed!", res);
       }
       return res.json();
     })
-    .then((json) => {
-      console.log("prompt response json,", json);
-    });
+    .then((json) => {});
 }
 
 // show form on DOM & return it

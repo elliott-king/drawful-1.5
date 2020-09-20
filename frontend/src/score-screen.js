@@ -13,7 +13,6 @@ async function showScoreScreen(drawings, game_id, drawing) {
 
   game.users.forEach((user) => {
     const id = user.id;
-    console.dir(scores.scores[id]);
     scoreDiv.appendChild(
       createScoreElem(userNameFromUser(user), scores.scores[user.id])
     );
@@ -37,7 +36,6 @@ function appendUserScore(div, score, username) {
 async function getAllScores() {
   let userScores = await fetch(`${usersUrl}all_scores/${getUserId()}`);
   userScores = await userScores.json();
-  // console.log(userScores);
   return userScores;
   // guesses: attach to user
   // is_correct, not?
