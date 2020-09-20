@@ -38,6 +38,10 @@ For Heroku, we can only push the subtree with the app. See:
 
 https://coderwall.com/p/ssxp5q/heroku-deployment-without-the-app-being-at-the-repo-root-in-a-subfolder
 
+```
+git subtree push --prefix drawful-backend heroku master
+```
+
 Guide for setting up w/ Github Pages: 
 
 https://medium.com/@angelospmusic/heroku-rails-api-javascript-front-end-9dfc06663624
